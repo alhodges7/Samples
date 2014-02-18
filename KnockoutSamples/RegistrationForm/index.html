@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Interactive Bindings</title>
+    <script src="Scripts/lib/jquery-2.1.0.js"></script>
+    <script src="Scripts/lib/knockout-3.0.0.js"></script>
+    <script src="Scripts/default.js"></script>
+</head>
+<body>
+    <h1>Interactive Bindings</h1>
+
+    <form action="#" method="post">
+        <p data-bind="event: {mouseover: function(data, event) { showDetails(data, event, 'firstName') },
+            mouseout: hideDetails}">
+            First name: <input data-bind="value: firstName" />
+            <span data-bind="visible: details() == 'firstName'">Your given name</span>
+        </p>
+        <p data-bind="event: {mouseover: function(data, event) { showDetails(data, event, 'lastName' )},
+            mouseout: hideDetails}">
+            Last name: <input data-bind="value: lastName" />
+            <span data-bind="visible: details() == 'lastName'">Your surname</span>
+        </p>
+        <p>Primary phone: <input data-bind="value: primaryPhone, hasfocus: phoneHasFocus" /></p>
+        <p>Secondary phone: <input data-bind="value: secondaryPhone, enable: primaryPhone" /></p>
+
+        <p>Annoy me with special offers: <input data-bind="checked: annoyMe" type="checkbox" /></p>
+        <div data-bind="visible: annoyMe">
+            <select data-bind="options: annoyTimes, value: selectedTime"></select>
+        </div>
+
+        <p><select data-bind="options: products, optionsText: 'name', value: favoriteProducts" size="3" multiple="true"></select></p>
+
+        <p><button data-bind="click: loadPersonFromMVCController">Load Data from MVC Controller</button></p>
+
+        <p><button data-bind="click: loadPersonFromWebApiController">Load Data from Web API Controller</button></p>
+
+        <p><button data-bind="click: saveUserData">Submit</button></p>
+    </form>
+</body>
+</html>

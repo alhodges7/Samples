@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Hello, Knockout.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="Styles\Style.css" />
+    <script src="Scripts/lib/jquery-2.1.0.js"></script>
+    <script src="Scripts/lib/knockout-3.0.0.js"></script>
+    <script src="Scripts/default.js"></script>
+</head>
+<body>
+    <h1>Hello, Knockout.js!</h1>
+    <!--<p><span data-bind="text: person().firstName"></span>&nbsp;<span data-bind="text: person().lastName"></span>'s Shopping Cart</p>-->
+    <p><span data-bind="text: personFullName()"></span>'s Shopping Cart <a href="#" data-bind="click: changeName">Change Name</a></p>
+    <p>
+        <table>
+            <thead><tr><th>Product</th><th>Price</th></tr></thead>
+            <tbody data-bind="foreach: shoppingCart">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: price"></td>
+                    <!--<td data-bind="text: $index"></td>-->
+                    <td>
+                        <ul data-bind="foreach: tags">
+                            <li>
+                                <span data-bind="text: $parent.name"></span> - <span data-bind="text: $data"></span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td data-bind="if: discount() > 0" style="color: red">
+                        You saved <span data-bind="text: formattedDiscount, css: {supersaver: discount() > .15}"></span>!!!
+                    </td>
+                    <td><a href="#" data-bind="click: $root.removeProduct">Remove</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+    <p>
+        Total Price: <span data-bind="text: totalPrice"></span>
+        <a href="#" data-bind="click: addProduct">Add Beer!</a>
+    </p>
+    <p data-bind="with: featuredProduct">
+        Do you need <strong data-bind="text: name"></strong>? <br />
+        Get one now for only <strong data-bind="text: price"></strong>.
+    <p><button data-bind="click: checkout">Checkout</button></p>
+</body>
+</html>
