@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Bootstrap Samples</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="padding-top: 60px">
+    <h1>Hello Bootstrap!</h1>
+
+    <abbr title="Hello Bootstrap">HB</abbr>
+
+    <address>
+        <strong>Jake Spurlock</strong><br>
+        <a href="mailto:#">flast@oreilly.com</a>
+    </address>
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner navbar-inverse">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div>
+        <ul class="breadcrumb">
+            <li><a href="#">Home</a> <span class="divider">&rarr;</span></li>
+            <li><a href="#">Dinner Menu</a> <span class="divider">&rarr;</span></li>
+            <li><a href="#">Specials</a> <span class="divider">&rarr;</span></li>
+            <li><a href="#">Steaks</a></li>
+        </ul>
+    </div>
+
+
+
+
+
+
+
+    <h3>Common Electronics Parts</h3>
+    <dl>
+        <dt>LED</dt>
+        <dd>A light-emitting diode (LED) is a semiconductor light source.</dd>
+        <dt>Servo</dt>
+        <dd>
+            Servos are small, cheap, mass-produced actuators used for radio
+            control and small robotics.
+        </dd>
+    </dl>
+
+    <div class="btn-group btn-group-xs">
+        <button class="btn btn-danger">Danger</button>
+        <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+
+    <p>
+        <ul class="nav">
+            <li class="active"><a href="#"><i class="glyphicon glyphicon-home icon-white"></i> Home</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-book"></i> Library</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-pencil"></i> Applications</a></li>
+            <li><a href="#"><i class="i"></i> Misc</a></li>
+        </ul>
+    </p>
+
+    <ul class="nav nav-pills">
+        <li class="active">
+            <a href="#">Home</a>
+        </li>
+        <li><a href="#">Profile</a></li>
+        <li class="disabled"><a href="#">Messages</a></li>
+    </ul>
+
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">Meats</a></li>
+            <li><a href="#tab2" data-toggle="tab">More Meat</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active fade" id="tab1">
+                <p>Bacon ipsum dolor sit amet jerky flank...</p>
+            </div>
+            <div class="tab-pane fade" id="tab2">
+                <p>Beef ribs, turducken ham hock...</p>
+            </div>
+        </div>
+    </div>
+
+
+    <a href="#myModal" role="button" class="btn" data-toggle="modal">
+        Launch demo modal
+    </a>
+    <!-- Modal -->
+    <div id="myModal" class="modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">
+                x
+            </button>
+            <h3 id="myModalLabel">Modal header</h3>
+        </div>
+        <div class="modal-body">
+            <p>One fine body…</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal"
+                    aria-hidden="true">
+                Close
+            </button>
+            <button class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+
+    <div class="btn-group" data-toggle="buttons-checkbox">
+        <button type="button" class="btn btn-primary">Left</button>
+        <button type="button" class="btn btn-primary">Middle</button>
+        <button type="button" class="btn btn-primary">Right</button>
+    </div>
+
+    <p>
+        Instead of always using divs, in HTML5, you can use new elements like
+        <code>&lt;section&gt;</code>, <code>&lt;header&gt;</code>, and
+        <code>&lt;footer&gt;</code>. The html should look something like this:
+    </p>
+    <pre>
+        &lt;article&gt;
+        &lt;h1&gt;Article Heading&lt;/h1&gt;
+        &lt;/article&gt;
+    </pre>
+
+    <div class="col-sm-offset-4 col-sm-4">
+        <table class="table-bordered table-condensed">
+            <caption style="font-size:x-large"><b>Sample table</b></caption>
+            <thead>
+                <tr>
+                    <th>Column 1 Header</th>
+                    <th>Column 2 Header</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Column 1 data</td>
+                    <td>Row 1 Column 2 data</td>
+                </tr>
+                <tr class="alert-success">
+                    <td>Row 2 Column 1 data</td>
+                    <td>Row 2 Column 2 data</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form class="col-sm-offset-2 col-sm-6">
+        <fieldset>
+            <legend>Legend</legend>
+            <label for="name">Label name</label>
+            <input type="text" id="name"
+                   placeholder="Type something…">
+            <span class="help-block">
+                Example block-level help
+                text here.
+            </span>
+            <label class="checkbox" for="checkbox">
+                <input type="checkbox" id="checkbox">
+                Check me out
+            </label>
+            <button type="submit" class="btn btn-danger btn-xs">Submit</button>
+        </fieldset>
+    </form>
+
+
+
+
+
+    <div class="accordion" id="accordion2">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                   href="#collapseOne">
+                    Collapsible Group Item #1
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    Anim pariatur cliche...
+                </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                   href="#collapseTwo">
+                    Collapsible Group Item #2
+                </a>
+            </div>
+            <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    Anim pariatur cliche...
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="button" class="btn btn-danger" data-toggle="collapse"
+            data-target="#collapseOne">
+        simple collapsible
+    </button>
+
+    <p></p>
+    
+    
+    
+    <div id="myCarousel" class=" carousel slide col-sm-2">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="active item text-center">My Carousel</div>
+            <div class="item text-center">Carousel One</div>
+            <div class="item text-center">Carousel Two</div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+
+
+    <div class="container" style="border:1px solid #00ff90;">
+        <div class="row lead">
+            <div class="col-sm-4"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</p></div>
+            <div class="col-sm-4"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</p></div>
+            <div class="col-sm-4"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</p></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-10" style="border:1px solid #ff6a00;">
+                <div class="col-sm-6 small" style="border:1px solid #808080;"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</p></div>
+                <div class="col-sm-6" style="border:1px solid #b6ff00;"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</p></div>
+            </div>
+            <div class="col-lg-1 col-lg-offset-1"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam cursus. Morbi ut mi. Nullam enim leo, egestas id, condimentum at, laoreet mattis, massa. Sed eleifend nonummy diam. Praesent mauris ante, elementum et, bibendum at, posuere sit amet, nibh. Duis tincidunt lectus quis dui viverra vestibulum. Suspendisse vulputate aliquam dui. Nulla elementum dui ut augue. Aliquam vehicula mi at mauris. Maecenas placerat, nisl at consequat rhoncus, sem nunc gravida justo, quis eleifend arcu velit quis lacus. Morbi magna magna, tincidunt a, mattis non, imperdiet vitae, tellus. Sed odio est, auctor ac, sollicitudin in, consequat vitae, orci. Fusce id felis. Vivamus sollicitudin metus eget eros.</p></div>
+        </div>
+    </div>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+        });
+    </script>
+</body>
+
+</html>
