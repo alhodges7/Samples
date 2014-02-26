@@ -1,0 +1,14 @@
+﻿@using (Html.BeginForm())
+{
+    <fieldset>
+        <span class="editor-label">
+            Select Faculty Member:
+        </span>
+        <span class="editor-field">
+            @Html.DropDownList("facultyid", ViewBag.faculty as SelectList)
+        </span>
+        <p>
+            <input type="submit" value="View Tasks" />
+        </p>
+    </fieldset>
+}

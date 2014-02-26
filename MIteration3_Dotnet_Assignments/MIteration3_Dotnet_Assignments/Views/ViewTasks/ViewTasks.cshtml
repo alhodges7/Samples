@@ -1,0 +1,50 @@
+﻿@model IEnumerable<MIteration3_Dotnet_Assignments.Models.ViewModels.ViewTasksViewModel>
+
+<h3>
+    @ViewBag.tableLabel
+</h3>
+
+    <table style="border: 0 0 0 0">
+
+    <tr>
+        <th>
+            Task Details
+        </th>
+        <th>
+            Faculty
+        </th>
+        <th>
+            Duration
+        </th>
+        <th>
+            Creator
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="text-align:left">
+                @Html.DisplayFor(modelItem => item.details)
+            </td>
+            <td style="text-align:left">
+                @Html.DisplayFor(modelItem => item.facultyName)
+            </td>
+            <td style="text-align:right">
+                @Html.DisplayFor(modelItem => item.duration)
+            </td>
+            <td style="text-align:left">
+                @Html.DisplayFor(modelItem => item.creator)
+            </td>
+        </tr>
+    }
+
+    <tr>
+        <td style="border: 0 0 0 0" />
+        <td style="border: 0 0 0 0" />
+        <td style="border: 0 0 0 0" />
+        <td style="border: 0 0 0 0; text-align: right">
+            @Html.ActionLink("Back", "Index")
+        </td>
+    </tr>
+</table>

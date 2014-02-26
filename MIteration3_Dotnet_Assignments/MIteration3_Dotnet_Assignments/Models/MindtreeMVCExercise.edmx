@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MindtreeMVCExerciseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_blog">
+          <Key>
+            <PropertyRef Name="blogid" />
+          </Key>
+          <Property Name="blogid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="blogname" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="50" />
+          <Property Name="body" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_comment">
+          <Key>
+            <PropertyRef Name="commentid" />
+          </Key>
+          <Property Name="commentid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comment" Type="varchar" MaxLength="50" />
+          <Property Name="blogid" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_customer">
+          <Key>
+            <PropertyRef Name="custid" />
+          </Key>
+          <Property Name="custid" Type="int" Nullable="false" />
+          <Property Name="custname" Type="varchar" MaxLength="50" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_faculty">
+          <Key>
+            <PropertyRef Name="facultyid" />
+          </Key>
+          <Property Name="facultyid" Type="int" Nullable="false" />
+          <Property Name="faculty_name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_task">
+          <Key>
+            <PropertyRef Name="taskid" />
+          </Key>
+          <Property Name="taskid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="details" Type="varchar" MaxLength="50" />
+          <Property Name="facultyid" Type="int" />
+          <Property Name="creator" Type="varchar" MaxLength="50" />
+          <Property Name="duration" Type="int" />
+        </EntityType>
+        <Association Name="FK__tbl_comme__blogi__0DAF0CB0">
+          <End Role="tbl_blog" Type="Self.tbl_blog" Multiplicity="0..1" />
+          <End Role="tbl_comment" Type="Self.tbl_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_blog">
+              <PropertyRef Name="blogid" />
+            </Principal>
+            <Dependent Role="tbl_comment">
+              <PropertyRef Name="blogid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_task__facult__0519C6AF">
+          <End Role="tbl_faculty" Type="Self.tbl_faculty" Multiplicity="0..1" />
+          <End Role="tbl_task" Type="Self.tbl_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_faculty">
+              <PropertyRef Name="facultyid" />
+            </Principal>
+            <Dependent Role="tbl_task">
+              <PropertyRef Name="facultyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MindtreeMVCExerciseModelStoreContainer">
+          <EntitySet Name="tbl_blog" EntityType="Self.tbl_blog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_comment" EntityType="Self.tbl_comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_customer" EntityType="Self.tbl_customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_faculty" EntityType="Self.tbl_faculty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_task" EntityType="Self.tbl_task" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tbl_comme__blogi__0DAF0CB0" Association="Self.FK__tbl_comme__blogi__0DAF0CB0">
+            <End Role="tbl_blog" EntitySet="tbl_blog" />
+            <End Role="tbl_comment" EntitySet="tbl_comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_task__facult__0519C6AF" Association="Self.FK__tbl_task__facult__0519C6AF">
+            <End Role="tbl_faculty" EntitySet="tbl_faculty" />
+            <End Role="tbl_task" EntitySet="tbl_task" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MindtreeMVCExerciseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_blog">
+          <Key>
+            <PropertyRef Name="blogid" />
+          </Key>
+          <Property Name="blogid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="blogname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="body" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_comment" Relationship="Self.FK__tbl_comme__blogi__0DAF0CB0" FromRole="tbl_blog" ToRole="tbl_comment" />
+        </EntityType>
+        <EntityType Name="tbl_comment">
+          <Key>
+            <PropertyRef Name="commentid" />
+          </Key>
+          <Property Name="commentid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="blogid" Type="Int32" />
+          <NavigationProperty Name="tbl_blog" Relationship="Self.FK__tbl_comme__blogi__0DAF0CB0" FromRole="tbl_comment" ToRole="tbl_blog" />
+        </EntityType>
+        <EntityType Name="tbl_customer">
+          <Key>
+            <PropertyRef Name="custid" />
+          </Key>
+          <Property Name="custid" Type="Int32" Nullable="false" />
+          <Property Name="custname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_faculty">
+          <Key>
+            <PropertyRef Name="facultyid" />
+          </Key>
+          <Property Name="facultyid" Type="Int32" Nullable="false" />
+          <Property Name="faculty_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_task" Relationship="Self.FK__tbl_task__facult__0519C6AF" FromRole="tbl_faculty" ToRole="tbl_task" />
+        </EntityType>
+        <EntityType Name="tbl_task">
+          <Key>
+            <PropertyRef Name="taskid" />
+          </Key>
+          <Property Name="taskid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="details" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="facultyid" Type="Int32" />
+          <Property Name="creator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="duration" Type="Int32" />
+          <NavigationProperty Name="tbl_faculty" Relationship="Self.FK__tbl_task__facult__0519C6AF" FromRole="tbl_task" ToRole="tbl_faculty" />
+        </EntityType>
+        <Association Name="FK__tbl_comme__blogi__0DAF0CB0">
+          <End Role="tbl_blog" Type="Self.tbl_blog" Multiplicity="0..1" />
+          <End Role="tbl_comment" Type="Self.tbl_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_blog">
+              <PropertyRef Name="blogid" />
+            </Principal>
+            <Dependent Role="tbl_comment">
+              <PropertyRef Name="blogid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_task__facult__0519C6AF">
+          <End Role="tbl_faculty" Type="Self.tbl_faculty" Multiplicity="0..1" />
+          <End Role="tbl_task" Type="Self.tbl_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_faculty">
+              <PropertyRef Name="facultyid" />
+            </Principal>
+            <Dependent Role="tbl_task">
+              <PropertyRef Name="facultyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MindtreeMVCExerciseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_blog" EntityType="Self.tbl_blog" />
+          <EntitySet Name="tbl_comment" EntityType="Self.tbl_comment" />
+          <EntitySet Name="tbl_customer" EntityType="Self.tbl_customer" />
+          <EntitySet Name="tbl_faculty" EntityType="Self.tbl_faculty" />
+          <EntitySet Name="tbl_task" EntityType="Self.tbl_task" />
+          <AssociationSet Name="FK__tbl_comme__blogi__0DAF0CB0" Association="Self.FK__tbl_comme__blogi__0DAF0CB0">
+            <End Role="tbl_blog" EntitySet="tbl_blog" />
+            <End Role="tbl_comment" EntitySet="tbl_comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_task__facult__0519C6AF" Association="Self.FK__tbl_task__facult__0519C6AF">
+            <End Role="tbl_faculty" EntitySet="tbl_faculty" />
+            <End Role="tbl_task" EntitySet="tbl_task" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MindtreeMVCExerciseModelStoreContainer" CdmEntityContainer="MindtreeMVCExerciseEntities">
+          <EntitySetMapping Name="tbl_blog">
+            <EntityTypeMapping TypeName="MindtreeMVCExerciseModel.tbl_blog">
+              <MappingFragment StoreEntitySet="tbl_blog">
+                <ScalarProperty Name="blogid" ColumnName="blogid" />
+                <ScalarProperty Name="blogname" ColumnName="blogname" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="body" ColumnName="body" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_comment">
+            <EntityTypeMapping TypeName="MindtreeMVCExerciseModel.tbl_comment">
+              <MappingFragment StoreEntitySet="tbl_comment">
+                <ScalarProperty Name="commentid" ColumnName="commentid" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="blogid" ColumnName="blogid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_customer">
+            <EntityTypeMapping TypeName="MindtreeMVCExerciseModel.tbl_customer">
+              <MappingFragment StoreEntitySet="tbl_customer">
+                <ScalarProperty Name="custid" ColumnName="custid" />
+                <ScalarProperty Name="custname" ColumnName="custname" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="state" ColumnName="state" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_faculty">
+            <EntityTypeMapping TypeName="MindtreeMVCExerciseModel.tbl_faculty">
+              <MappingFragment StoreEntitySet="tbl_faculty">
+                <ScalarProperty Name="facultyid" ColumnName="facultyid" />
+                <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_task">
+            <EntityTypeMapping TypeName="MindtreeMVCExerciseModel.tbl_task">
+              <MappingFragment StoreEntitySet="tbl_task">
+                <ScalarProperty Name="taskid" ColumnName="taskid" />
+                <ScalarProperty Name="details" ColumnName="details" />
+                <ScalarProperty Name="facultyid" ColumnName="facultyid" />
+                <ScalarProperty Name="creator" ColumnName="creator" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

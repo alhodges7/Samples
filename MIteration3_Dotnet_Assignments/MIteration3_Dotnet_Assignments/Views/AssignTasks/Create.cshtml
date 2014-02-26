@@ -1,0 +1,61 @@
+﻿@model MIteration3_Dotnet_Assignments.Models.tbl_task
+
+<div>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <h2>Create Task:</h2>
+
+    @using (Html.BeginForm())
+    {
+        <fieldset>
+            <legend>tbl_task</legend>
+
+                <table>
+                    <tr>
+                        <td class="editor-label">
+                            Select Faculty name:
+                        </td>
+                        <td class="editor-field">
+                            @Html.DropDownList("facultyid", ViewBag.faculty as SelectList)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="editor-label">
+                            Enter task details:
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.details)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="editor-label">
+                            Enter duration:
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.duration)
+                            hrs
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="editor-label">
+                            Enter creator name:
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.creator)
+                        </td>
+                    </tr>
+            </table>
+
+            <p>
+                <input type="submit" value="Create" />
+                @Html.ActionLink("Home", "Index", "Home")
+            </p>
+
+        </fieldset>
+    }
+</div>
