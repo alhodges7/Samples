@@ -5,6 +5,13 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement", "MIteration3_Dotnet_Assignments\TaskManagement.csproj", "{FDE290CD-04AB-4BF4-A4F3-A2804B919517}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogAndCommentsWCFLib", "BlogAndCommentsWCFLib\BlogAndCommentsWCFLib.csproj", "{65A8D391-9191-4BBD-B300-B0A662022E7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogAndCommentsWebClient", "BlogAndCommentsWebClient\BlogAndCommentsWebClient.csproj", "{4926763C-87CE-47D6-8566-C9EA90A9086C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65A8D391-9191-4BBD-B300-B0A662022E7A} = {65A8D391-9191-4BBD-B300-B0A662022E7A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,14 @@ Global
 		{FDE290CD-04AB-4BF4-A4F3-A2804B919517}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDE290CD-04AB-4BF4-A4F3-A2804B919517}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDE290CD-04AB-4BF4-A4F3-A2804B919517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65A8D391-9191-4BBD-B300-B0A662022E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65A8D391-9191-4BBD-B300-B0A662022E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65A8D391-9191-4BBD-B300-B0A662022E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65A8D391-9191-4BBD-B300-B0A662022E7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4926763C-87CE-47D6-8566-C9EA90A9086C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4926763C-87CE-47D6-8566-C9EA90A9086C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4926763C-87CE-47D6-8566-C9EA90A9086C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4926763C-87CE-47D6-8566-C9EA90A9086C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
