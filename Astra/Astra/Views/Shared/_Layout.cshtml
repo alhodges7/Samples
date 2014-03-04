@@ -1,0 +1,145 @@
+﻿@using Astra.Helper;
+
+@{
+    if (MembershipHelper.FormsAuthMode)
+    {
+        if (WebSecurity.IsAuthenticated && !WebSecurity.UserExists(MembershipHelper.CurrentUserName()))
+        {
+            WebSecurity.Logout();
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(MembershipHelper.CurrentUserName()))
+            {
+                log4net.ILog log = log4net.LogManager.GetLogger("_Layout");
+                log.Debug("Rendering layout for " + MembershipHelper.CurrentUserName());
+            }
+        }
+    }
+}
+   
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" >
+    <meta http-equiv="X-UA-Compatible" content="IE=10" >
+
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+
+
+
+
+</head>
+<body>
+    <div id="spinner">
+        Minding...
+    </div>
+
+    <div id="pageHolder">
+        <header style="min-width: 600px">
+            <div class="content-wrapper">
+                <div style="float: left; margin: 0px; width: 250px;">
+                    <table style="height: 60px">
+                        <tr>
+                            <td style="text-align: center;">
+                                @Html.ActionLink(
+                                        " ",
+                                        "Index",
+                                        "Home",
+                                        null,
+                                        new
+                                        {
+                                            style = "background: url('" + Url.Content("~/Images/Astra_Logo_2.png") + "') no-repeat right; display:block; height:61px; width:214px;margin-top:13px;margin-left:5px"
+                                        }
+                                    )
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="float-right" style="padding-top: 5px; margin-top: 0px; margin-right: 5px">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home", null, new { onclick = "showSpinner()" })</li>
+                            <li>@Html.ActionLink("Browse", "Index", "Resources", null, new { onclick = "showSpinner()" }) </li>
+                            @if (MembershipHelper.FormsAuthMode){
+                                <li>@Html.ActionLink("Account", "ManageProfile", "Account",  null, new { onclick = "showSpinner()" })</li>
+                            }
+
+                            @if (!MembershipHelper.UserHasRoles(MembershipHelper.CurrentUserName(), new string[] { MembershipHelper.ROLE_ADMIN }))
+                            {
+                                <li>@Html.ActionLink("My Check-Outs", "MyCheckOuts", "Home",  null, new { onclick = "showSpinner()" })</li>
+                            }
+
+                            @if (WebSecurity.UserExists(MembershipHelper.CurrentUserName()))
+                            {
+                                if ((Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN)))
+                                {
+                                    <li>@Html.ActionLink("Admin", "Index", "Admin",  null, new { onclick = "showSpinner()" })</li>
+                                    <li>@Html.ActionLink("Suggestion List", "Index", "Suggestions", new {suggestionStatus = (int)ResourceSuggestion.SuggestionStates.Pending }, new { onclick = "showSpinner()" })</li>
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("My Suggestions", "Index", "Suggestions", null, new { onclick = "showSpinner()" })</li>
+                                }
+                            
+                            }
+
+                            <li>@Html.ActionLink("About", "About", "Home", null, new { onclick = "showSpinner()" })</li>
+
+                            <li> <a href="~/Wiki/Overview.html">Help</a> </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                                
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/fancybox")
+    @Scripts.Render("~/bundles/spinner")
+    @Scripts.Render("~/Scripts/rateit/jquery.rateit.js")
+    @Scripts.Render("~/Scripts/Shared/AstraShared.js")
+    @Scripts.Render("~/bundles/modernizr")  
+    @Styles.Render("~/Content/fancybox")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/rateitcss")
+    @Styles.Render("~/Content/AstraStyles")
+    @Styles.Render("~/Content/rateit/rateit.css")
+    @Styles.Render("~/bundles/spinner")         
+    @RenderSection("Scripts", required: false)    
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left" style="vertical-align: middle; padding-top: 10px; color: #fff">
+                    <a href="http://www.mindtree.com">
+                        <img class="ImageLink" src="@Url.Content("~/Images/mindtree_footer.png")" align="middle" style="margin-top:-5px;margin-left:5px"/></a> - &copy;  @DateTime.UtcNow.Year
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div id="loading">
+    <div id="loadingcontent">
+        <p id="loadingspinner">
+            Minding...
+        </p>
+    </div>
+</div>
+    
+</body>
+</html>

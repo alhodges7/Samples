@@ -1,0 +1,76 @@
+﻿@using Astra.Models.ViewModels;
+@model UserMailMessages_IndexViewModel
+
+
+@Scripts.Render("~/Scripts/UserMessages/UserMessage.js")
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+@using (Html.BeginForm())
+{
+@Html.ValidationSummary(true)
+<fieldset>
+<legend>Messages:</legend>
+
+    @if (!Model.UnreadMessages.Any() && !Model.ReadMessages.Any())
+    {
+        @: <H2>You do not currently have any messages.</H2>
+    }
+    else
+    {
+    <table style="border-width:0px;width:100%">
+        <tr>
+            <td style="width:30%;">
+                <input id="selectAllActionButton" class="SelectAllAction" type="button" value="Select All" />
+                <input id="deSelectAllActionButton" class="DeSelectAllAction" type="button" value="DeSelect All" />
+                <input id="deleteActionButton" class="DeleteAction" type="button" value="Delete Checked Messages" />
+            </td>
+            <td>
+                <div style="display:none;text-align:left;" id="confirmDeleteDiv">
+                Are you sure you want to delete these message(s)? &nbsp; 
+                <input id="confirmDeleteActionButton"  class="ConfirmDeleteAction" type="button" value="YES" />
+                <input id="cancelActionButton"  class="CancelAction" type="button" value="NO" />
+                </div>
+            </td>
+        </tr>
+        </table>        
+    
+
+        <div id="messageDiv">
+        @if(Model.UnreadMessages.Any())
+        {
+            foreach (UserMailMessage message in Model.UnreadMessages)
+            {
+                @Html.Partial("_UserMailMessage", message)<br />
+            }
+        }
+        else
+        {
+            @: <div style="margin-top:10px;margin-left:10px">You have no unread messages.</div>
+        }
+
+        <h3>Older Messages:</h3>
+        @if(Model.ReadMessages.Any())
+        {
+            foreach (UserMailMessage message in Model.ReadMessages)
+            { 
+                @Html.Partial("_UserMailMessage", message)
+            }
+        }
+        else
+        {
+            @: <div style="margin-top:10px;margin-left:10px">You have no previously-read messages.</div>
+        }
+    </div>
+    }
+</fieldset>
+}
+</body>
+</html>

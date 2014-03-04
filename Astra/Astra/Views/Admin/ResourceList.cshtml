@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Astra.Models.ViewModels.ResourceListViewModel>
+
+@{
+    ViewBag.Title = "ResourceList";
+}
+@Scripts.Render("~/Scripts/Admin/ResourceList.js")
+<h2>Resource List</h2>
+
+<div style="margin-left: 40px;margin-top:10px; text-align:end">
+    <a href="#" id="createNewResource">Create New Resource</a><div class="createType" style="display:none">@Html.DropDownList("ResourceTypes")</div>
+</div>
+<br />
+<table class="standardTable" style="margin:auto; text-align:left; margin-left:20px;margin-right:20px">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayName("Copies")
+        </th>
+        <th style="text-align:center; width:150px">Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.Title, "Summary", "Resources", new { resourceId = item.ResourceId }, null)
+        </td>
+        <td> 
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td  style="text-align:center">
+            @Html.DisplayFor(modelItem => item.NumberOfCopies)
+        </td>
+        <td style="text-align:center">
+            @Html.ActionLink("Edit", "EditResource", "Admin", new { resourceId = item.ResourceId}, null) |
+            @Html.ActionLink("History", "CheckOutHistory", "CheckOuts",new { resourceId = item.ResourceId }, null)  |
+            @Html.ActionLink("Delete", "DeleteResource", "Admin", new { resourceId = item.ResourceId }, null)
+        </td>
+    </tr>
+}
+
+</table>

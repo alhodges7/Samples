@@ -1,0 +1,138 @@
+﻿@using Astra.Helper;
+@model IEnumerable<Astra.Models.UserProfile>
+
+@{
+    ViewBag.Title = "User List";
+}
+@Scripts.Render("~/scripts/admin/UserList.js")
+@Scripts.Render("scripts/users/userslist.js")
+
+<h2>User List</h2>
+<h3>
+    @if (ViewBag.Message != null)
+    {
+        @ViewBag.Message
+    }
+    <span class="message" style="color:green"></span>
+</h3>
+<br />
+
+    <table class="standardTable">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MID)
+            </th>
+            <th>Name &nbsp;
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th><span style="font-size: medium"><b>History</b></span></th>
+            @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN))
+            {
+                <th>Action</th>
+                <th>Check Out</th>
+                <th></th> 
+            }
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.ActionLink(item.MID, "PerUserAdminFunction", "Admin", new { mid = item.MID }, null)
+
+                </td>
+                <td>
+                    @Html.ActionLink(item.FirstName + " " + item.LastName, "PerUserAdminFunction", "Admin", new { mid = item.MID }, null)
+
+                </td>
+                <td>
+                    <a href="mailto:@Html.DisplayFor(modelItem => item.Email)">@Html.DisplayFor(modelItem => item.Email)</a>
+                </td>
+                <td>
+                    @Html.ActionLink("Checkouts", "Select", new { MID = item.MID })
+                </td>
+                @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN))
+                {
+                    <td>
+                        <select id="actionSelect-@item.Id">
+                            <option value="No action">(Select an action)</option>
+                            <option value="ResetPassword">Reset password</option>
+                            <option value="SendMessage">Send Message</option>
+                            <option value="DeleteRatings">Delete ratings</option>
+                            <option value="DeleteReviews">Delete reviews</option>
+                            @if (item.IsActive)
+                            {
+                                <option value="ToggleActive">Deactivate</option>
+                            }
+                            else
+                            {
+                                <option value="ToggleActive">Activate</option>
+                            }
+
+                            @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN))
+                            {
+                                if (Roles.IsUserInRole(item.MID, MembershipHelper.ROLE_LIBRARIAN))
+                                {
+                                <option value="ToggleLibrarian">Demote</option>
+                                }
+                                else
+                                {
+                                <option value="ToggleLibrarian">Promote</option>
+                                }
+                            }
+                            
+                        </select>
+                        <input id="adminActionButton-@item.Id" class="AdminAction" type="button" value="Submit action" data-mid="@item.MID" />
+                    </td>
+            
+                    <td>
+                        @if ((ViewBag.AvailableResources as SelectList).Count() > 0)
+                        {
+                 
+                            @Html.DropDownList("AvailableResources", null, "(Select a book)", new { @class = "AvailableResources", id = "ctrlResources-" + item.Id, style = "width:120px; margin-right: 20px" })
+                            <input class="btnCheckOut" id="ctrlChkOut-@item.Id" type="button" disabled="disabled" value="Check out" data-actionurl="@Url.Action("AdminCheckOut", "CheckOuts", new { mId = item.MID }, null)" />   
+                        }
+                        else
+                        {
+                            @:(no resources currently available)
+                        }
+                    </td>
+                    <td><div style="display:none" id="deletionDiv-@item.Id"> Are you sure you want to delete? 
+                        <a href="#" class="cancelDeletion" id="cancelDeletion-@item.Id">No</a>
+                        <a href="#" class="confirmDeletion" id="confirmDeletion-@item.Id" data-mid="@item.MID">Yes</a>
+                        </div>
+                    </td> 
+                }
+            </tr>
+        }
+    </table>    
+
+
+
+
+<div style="display: none">
+    <div id="sendMessageDialog" title="Send Message">
+
+        <div>Message Text</div>
+        <textarea id="systemMessageText" style="height: 100px; width: 95%;"></textarea>
+
+        <div>
+            <table cellspacing="2" cellpadding="2" border="0">
+                <tr>
+                    <td>
+                        <input type="button" id="SMD_SendMessage" value="Send" />
+                    </td>
+                    <td>
+                        <input type="button" id="SMD_CancelMessage" value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+

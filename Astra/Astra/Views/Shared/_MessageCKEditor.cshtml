@@ -1,0 +1,11 @@
+﻿@model Astra.Models.UserMailMessage
+
+@Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+@Scripts.Render("~/Scripts/ckeditor/adapters/jquery.js")
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MessageContent)
+        </div>
+            @Html.TextAreaFor(model => model.MessageContent, new { @class="ckeditor", style="word-wrap:break-word;"})
+            @Html.ValidationMessageFor(model => model.MessageContent)
+

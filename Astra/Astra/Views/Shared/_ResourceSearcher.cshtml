@@ -1,0 +1,18 @@
+﻿<script>
+    $(function () {
+        $("#accordion").accordion({
+            heightStyle: "content"
+        }); });
+</script>
+
+<div id="accordion" style="margin-top:30px; margin-left:20px; margin-right:20px;width:700px">
+    <h2 class="searchHeader">Standard Search</h2>  
+    <div>
+        @Html.Partial("_KeyWordSearchBox")
+    </div>
+    <h2 class="searchHeader">Advanced Search</h2>  
+    <div>
+        @Html.Partial("~/Views/Resources/_AdvSearch.cshtml", new Astra.Models.ViewModels.ResourcesViewModel())
+   
+    </div>
+</div>

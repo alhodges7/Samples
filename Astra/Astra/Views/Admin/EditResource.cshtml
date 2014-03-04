@@ -1,0 +1,25 @@
+@model Astra.Models.Resource
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("EditResource", "Admin", null, FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Edit</legend>
+        <div>
+            @Html.Partial("_CreateOrEditBase", Model)
+        </div>
+
+        <p class="clear">
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>  
+}
+<div>
+    @Html.ActionLink("Back to List", "Index", "Resources", null, null)
+</div>
+

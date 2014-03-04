@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Merge";
+}
+
+<h2>Merge Links for @Html.Raw(ViewBag.TargetKeyWord.Word)</h2>
+
+@using (Html.BeginForm()) {
+    
+<div>
+
+Choose the Key Word whose associations you want to merge into the existing associations for the 
+Key Word <span style="font-weight: bold; color: orange">@Html.Raw(ViewBag.TargetKeyWord.Word)</span>.
+
+<div style="padding-top: 15px;">
+@Html.DropDownList("MergeIntoKeyWordList", (IEnumerable<SelectListItem>)ViewBag.KeyWordList)
+</div>
+
+@Html.Hidden("TargetKeyWordId", (object) ViewBag.TargetKeyWord.KeyWordID)
+
+<div style="padding-top=15px;">
+    <input type="submit" value="Merge" />    
+</div>
+
+  
+
+</div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/KeyWords/KeyWords.js")
+}

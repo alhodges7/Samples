@@ -1,0 +1,40 @@
+@using Astra.Models.ViewModels;
+@using Astra.Models.ResourceTypes;
+@using Astra.Helper;
+@model Astra.Models.Resource
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@Scripts.Render("~/Scripts/Admin/ResourceList.js")
+@Scripts.Render("~/Scripts/Admin/AdminCheckout.js")
+
+<link href="../../Content/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/Scripts/ui.core.js"></script>
+<script type="text/javascript" src="/Scripts/ui.datepicker.js"></script>
+
+@using (Html.BeginForm("Create", "Admin", null, FormMethod.Post, null))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend >Create Resource</legend>
+
+        <div style="padding-top: 10px;">
+
+        @Html.Partial("_CreateOrEditBase", Model)
+
+        </div>
+       
+    </fieldset>
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+}
+<div>
+    @Html.ActionLink("Back to List", "ResourceList", "Admin", null, null)
+</div>
+
+

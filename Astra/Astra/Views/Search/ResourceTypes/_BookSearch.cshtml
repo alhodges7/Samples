@@ -1,0 +1,58 @@
+﻿@model Astra.Models.ResourceTypes.Book
+@using Astra.Controllers;
+
+@Scripts.Render("~/Scripts/Resources/AdvSearchValidation.js")
+@{
+    Html.EnableClientValidation(false);
+
+    KeyWordController kwController = new KeyWordController();
+}
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("AdvSearch", "Resources", FormMethod.Post, new { @id = "advancedSearch"}))
+{
+ 
+   
+
+<fieldset>
+    <legend>Resource</legend>
+    @Html.Hidden("Discriminator","Book")
+    @Html.HiddenFor(model => model.ResourceID)
+    <div class="editor-label" style="padding-top: 15px;">
+        @Html.LabelFor(model => model.Title)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Title, new { style = "width: 300px;", @class = "text-box single-line searchField" })
+
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Author)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Author, new { @class = "text-box single-line searchField" })
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("ISBN")
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.ISBN, new { @class = "text-box single-line searchField" })
+    </div>
+
+    <div class="editor-label" style="padding-top: 5px;">
+        @Html.LabelFor(model => model.KeyWords) <span style="/*font-style: italic; */">(use ctrl-click to select multiple)</span>
+    </div>
+    <div class="editor-field">
+        @Html.ListBoxFor(model => model.KeyWords, kwController.KeyWordMultiSelectList((ViewBag.SelectedKeyWords as List<Astra.Models.KeyWord>)), new { style = "width: 268px;height:221px", id = "keywordsList" })
+    </div>
+    <p>
+        <input type="submit" value="Search" id="btn_advancedSearchBookSubmit" />
+    </p>
+</fieldset>
+
+}
+
+ 
+
+
+
+

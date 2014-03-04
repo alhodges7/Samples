@@ -1,0 +1,337 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@using MTUtil.Strings;
+@using Astra.CompositeRepository;
+@using Astra.Models.ResourceTypes;
+@using Astra.Controllers;
+@model Astra.Models.ViewModels.SummaryViewModel
+
+@Styles.Render("~/Content/rateit/rateit.css")
+
+@* We shouldn't have to do this if the bundles work correctly, which currently they do not in our deployed environment. *@
+@Styles.Render("~/Content/fancybox/jquery.fancybox.css")
+@Styles.Render("~/Content/fancybox/helpers/jquery.fancybox-buttons.css")
+@Styles.Render("~/Content/fancybox/helpers/jquery.fancybox-thumbs.css")
+
+
+@{
+    ViewBag.Title = "Summary";
+
+    bool isAvailable = Model.CopiesAvailable != 0;
+
+    int numberOfUserComments = 0;
+    bool userHasCommentedOnResource = false;
+
+    if (WebSecurity.IsAuthenticated)
+    {
+        using (var commentRepository = new ScopedCompositeRepository().Repositories.CommentRepository)
+        {
+            numberOfUserComments = commentRepository.GetTotalNumberOfComments(Model.Resource.ResourceID);
+            userHasCommentedOnResource = commentRepository.UserHasCommentedOnResource(Model.Resource.ResourceID, MembershipHelper.StripOffDomain(WebSecurity.CurrentUserName));
+        }
+    }
+
+    int reservationsAvailable = 0;
+    using (var repository = new ScopedCompositeRepository().Repositories.ReservationRepository)
+    {
+        reservationsAvailable = Astra.Repositories.ReservationRepository.MAX_RESERVATIONS
+            - repository.GetNumberActiveReservationsForResource(Model.Resource.ResourceID);
+    } 
+}
+@Html.HiddenFor(model => Model.Resource.Discriminator)
+<div class="summaryOuter">
+@{
+    string type = Model.Resource.Discriminator;
+    Resource resource = Model.Resource;
+          
+    <div class="summaryInnerLeft">
+        <div id="coverImageDiv">@Html.Partial("_SingleImage", new ResourceImageViewModel() { Image = Model.Resource.CoverImage, ResourceId = Model.Resource.ResourceID }, new ViewDataDictionary { { "isReadOnly", true } })</div>
+        @Html.Partial("_TinyThumbnails", Model.Resource, new ViewDataDictionary { { "isReadOnly", true } })
+    </div>
+    <div class="summaryInnerRight">
+        <span class="ResourceThumbnailTitle"><b>@Model.Resource.Title </b></span>
+        @Html.Partial("../Rating/_AverageRating", Model.Resource)
+        @if (Model.Resource is Book)
+        {
+            var book = (Book)Model.Resource;
+            if (book.Author != null)
+            {
+                <br />
+                <i>By @book.Author</i>    
+            }   
+        }
+        @if (Model.Resource is EBook)
+        {
+            var book = (EBook)Model.Resource;
+            if (book.Author != null)
+            {
+                <br />
+                <i>By @book.Author</i>    
+            } 
+        }
+        <div class="separatorDiv" style="margin-bottom: 10px 0px 5px 100px"></div>
+        @if (resource.Description != null)
+        {
+            <span>@Html.Raw(Model.Resource.Description.Replace(Environment.NewLine, "<br/>"))</span>
+        }
+        else
+        {
+            <span><i>This resource has no description.</i></span>
+        }
+    </div>    
+}
+    
+</div>
+
+<div class="separatorDiv" style="float: none; clear: both"></div>
+
+<div class="summaryOuter">
+    <div class="content">
+        <div>
+            <span style="font-size: medium;"><strong>Reviews</strong></span>
+            @if (Model.Resource.Comments.Count() == 0)
+            {
+                <div class="summaryDiv">
+                    <span>There are currently no reviews for this resource.</span>
+                    @if (WebSecurity.IsAuthenticated)
+                    {
+                        <span>If you've used it, why not add one?</span>
+                    }
+                </div>
+            }
+
+            @if (WebSecurity.IsAuthenticated)
+            {
+                // Create comment box goes here.
+                if (!userHasCommentedOnResource)
+                {
+                <div>
+                    <input type="button" class="btn_addComment" value="Add Review" />Your rating: @Html.Action("UserRating", "Rating", new { resourceId = Model.Resource.ResourceID })
+                </div>
+                <div class="addCommentBlock" style="display: none; padding: 15px;">
+                    @using (Ajax.BeginForm("AddComment", "Comment",
+                                    new
+                                    {
+                                        resourceId = Model.Resource.ResourceID,
+                                        mid = MembershipHelper.StripOffDomain(WebSecurity.CurrentUserName),
+                                        UserComment = Model.Comment.UserComment
+                                    },
+                                    new AjaxOptions()
+                                    {
+                                        HttpMethod = "POST",
+                                        OnComplete = "SummaryScript.addCommentComplete",
+                                        OnFailure = "AstraSharedScript.ajaxError"
+                                    }))
+                    {
+                         @Html.Partial("_CommentCKEditor", new Comment()) 
+                         <br />
+                        <input class="addCommentValidation" type="submit" value="Add" style="margin-right: 5px; margin-left: auto" />
+                        <input class="commentCancel" type="button" value="Cancel" style="margin-right: 5px; margin-left: auto" />   
+                    }
+                </div>
+                }
+
+            }
+@*This line will be changed to float current user comment to the top.*@
+            @foreach (Comment comment in Model.Resource.Comments.OrderByDescending(x => x.CreatedOn))
+            {
+                <div style="margin-top: 15px">
+                    @Html.Partial("_ResourceUserComment", comment)
+                </div>
+            }
+            <br />
+            <div class="separatorDiv"></div>
+
+            <span style="font-size: medium"><b>Current Checkouts (@ViewBag.CurrentCheckouts.Count)</b></span>
+            @if (ViewBag.CurrentCheckouts != null)
+            {
+                <div>@Html.Partial("_CurrentCheckouts", ViewBag.CurrentCheckouts as List<Astra.Models.CheckOut>)</div>
+            }
+            else
+            {
+                <div><i>There are currently no copies of this resource checked out.</i></div>   
+            }
+
+            <div class="separatorDiv"></div>
+
+            <span style="font-size: medium"><b>Current Reservations (@ViewBag.CurrentReservations.Count)</b></span>
+            @if (ViewBag.CurrentReservations != null)
+            {
+                <div>@Html.Partial("_CurrentReservations", ViewBag.CurrentReservations as List<Astra.Models.Reservation>)</div>
+            }
+            else
+            {
+                <div><i>This resource has no current reservations.</i></div>   
+            }
+
+            <div class="separatorDiv"></div>
+
+            <span style="font-size: medium"><b>History</b></span>
+            @if (ViewBag.RecentActivity != null)
+            {
+                <div>@Html.Partial("_ResourceHistory", ViewBag.RecentActivity as List<Astra.Helper.ISummaryHistoryItem>)</div>
+            }
+            else
+            {
+                <div><i>This resource has not yet been checked out.</i></div>   
+            }
+        </div>
+        <div class="separatorDiv"></div>
+    </div>
+    <div class="sidebarRight">
+        <div style="width: 235px;">
+            <div class="summaryDiv" style="border-left: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0; padding-left: 5px; padding-bottom: 15px; border-bottom-left-radius: 10px">
+            @{
+                if (ViewBag.ResourcetypeSpecificDetails != null)
+                {
+                    @Html.Partial(ViewBag.ResourcetypeSpecificDetails as string, Model.Resource)
+                }
+                if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+                {
+                    if (Model.Resource.PurchaseCost != null)
+                    {
+                        <b>Purchase cost: </b>@Model.Resource.PurchaseCost<br />
+                    }
+                    if (Model.Resource.PurchaseDate != null)
+                    {
+                        <b>Purchase date: </b>@Model.Resource.PurchaseDate<br />
+                    }
+                    if (Model.Resource.ReplacementCost != null)
+                    {
+                        <b>Replacement cost: </b>@Model.Resource.ReplacementCost<br />
+                    }
+                }
+            }
+                
+
+            @if (resource.KeyWords != null)
+            {
+                <div>
+                    <b>Keywords: </b>
+                    @foreach (var item in Model.Resource.KeyWords)
+                    {
+                        @item
+                        if (Model.Resource.KeyWords.IndexOf(item) != Model.Resource.KeyWords.Count() - 1)
+                        {
+                        @Html.Raw(", ")
+                        }
+                    }
+                </div>
+            }            
+                <br />
+                <div class="SummaryCheckoutContainer" style="width:100%; flex-align:center">
+
+                    @if (!WebSecurity.IsAuthenticated)
+                    {
+                        <div style="margin: 0px 0px;">
+                            <input type="button" value="Check Out" disabled style="color: darkgray" />
+                        </div>
+                        <div style="padding-top: 3px; padding-bottom: 4px;">Only registered users may check out resources.</div>
+                    }
+                    else if (!Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) && !Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN)) // ... is a basic user
+                    {
+                        if (Model.UserHasResourceCheckedOut == true)
+                        {
+                        <div style="margin: 10px 0px;">
+                            <img src="~/Images/CheckIn.png" style="cursor: pointer;" id="btn_checkin" data-actionurl="@Url.Action("CheckIn", "CheckOuts", new { resourceId = Model.Resource.ResourceID })"/>
+                        </div>
+                        }
+                        else if (Model.UserHasResourceReserved)
+                        {
+                        <input type="button" value="Cancel Reservation" id="btn_cancelReservation" data-actionurl="@Url.Action("CancelReservation", "Reservations", new { resourceId = Model.Resource.ResourceID })"/>
+                        @: <div style="padding-top: 3px; padding-bottom: 4px;">You have reserved this resource.</div>
+                        }
+                        else if (Model.CopiesAvailable > 0)
+                        {  
+                        <div style="margin: 10px 0px;">
+                            <img src="~/Images/CheckOut.png" id="btn_checkout"  style="cursor: pointer;"
+                                        data-actionurl="@Url.Action("CheckOut", "CheckOuts", new { resourceId = Model.Resource.ResourceID })"/>
+                        </div>     
+                        }
+                        else if (reservationsAvailable > 0)
+                        {
+                        <input type="button" value="Reserve" id="btn_reserve" data-actionurl="@Url.Action("ReserveBook", "Reservations", new { resourceId = Model.Resource.ResourceID })"/>
+                        <br />
+                        @: <div style="padding-top: 3px; padding-bottom: 4px;">All copies of this resource are checked out, but reservation spots are available.</div>
+                        }
+                        else
+                        {
+                        <input type="button" value="Reserve" disabled />
+                        <br />
+                        @: <div style="padding-top: 3px; padding-bottom: 4px;">All copies of this resource are checked out, and all reservation spots have been taken.</div>
+                                }
+                    }
+                    else // is an admin
+                    {
+                        if (Model.CopiesAvailable > 0)
+                        {
+                        <input type="button"id="admin_Checkout-@Model.Resource.ResourceID" 
+                     class="admCheckOut" value="Check out for user..." name="Check Out" style="width: 155px;"/>
+                    
+                        <div id="chkOut-@Model.Resource.ResourceID" class="chkOut" style="display:none">
+                            <iframe id="adminCheckOutIframe-@Model.Resource.ResourceID" 
+                                          frameBorder="0"
+                                          class="frame2" style="width:425px;height:185px"
+                                        data-src="@Url.Action("AdminCheckoutDialog", "Admin", new { resourceId = Model.Resource.ResourceID })"></iframe>
+                        </div>
+                        }
+                        else
+                        {
+                        <input type="button" value="Check out for user..." style="width: 155px;" disabled />
+                        @: <div style="padding-top: 3px; padding-bottom: 4px;">No copies of this resource are available to check out.</div>
+                                }
+                        if (Model.CopiesAvailable < Model.Resource.Copies)
+                        {
+                        <input type="button" id="admin_CheckIn-@Model.Resource.ResourceID" style="width: 155px;" class="admCheckIn" value="Check in for user..." 
+                                     data-actionurl="@Url.Action("CheckIn", "CheckOuts", new { resourceId = Model.Resource.ResourceID })"/>
+                        <div id="chkIn-@Model.Resource.ResourceID" class="chkIn" style="display:none">
+                            <iframe id="adminCheckInIframe-@Model.Resource.ResourceID" 
+                                            frameBorder="0"
+                                            class="frame2" style="width:425px;height:185px"
+                                            data-src="@Url.Action("AdminCheckinDialog", "Admin", new { resourceId = Model.Resource.ResourceID })"></iframe>
+                        </div>
+                        }
+                        else
+                        {
+                        <input type="button" style="width: 155px;" value="Check in for user..." disabled />
+                        @: <div style="padding-top: 3px; padding-bottom: 4px;">No copies of this resource are checked out.</div>
+                            }
+                    }
+                    <div><span>@Model.CopiesAvailable / @Model.Resource.Copies copies available</span></div>
+                </div>
+            </div>
+        </div>
+        @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+        {
+            <div style="background: lightgrey;  border:solid; border-color:lightgray; border-radius: 15px; padding: 5px 15px 3px 15px; margin: 15px 5px 5px 25px; width: 180px;">
+                <span style="font-size: larger; font-weight: 700">Administrator Actions</span>
+                <div class="separatorDiv" style="border-color: darkgray; margin: 0px 10px 0px 10px;"></div>
+                <div>@Html.ActionLink("Edit Resource", "EditResource", "Admin", new { resourceId = Model.Resource.ResourceID }, null)</div>
+                <div>@Html.ActionLink("Delete Resource", "DeleteResource", "Admin", new { resourceId = Model.Resource.ResourceID }, null)</div>
+                @Html.Action("RatingList", "Rating", new { resourceId = Model.Resource.ResourceID })
+            </div>
+            
+            <div style="background: white; border:solid; border-color:#3E646F; border-radius: 15px; padding: 5px 15px 3px 15px; margin: 15px 5px 5px 25px; width: 180px;">
+                <span style="font-size: larger; font-weight: 700">Administrators' Note</span>
+                <div class="separatorDiv" style="border-color: darkgray; margin: 0px 10px 0px 10px;"></div>
+                @Model.AdminNote
+            </div>
+        }
+    </div>
+</div>
+
+<div id="noCopiesAvailableDialog" title="Reserve Book" style="display: none">
+    All available copies of this book are currently checked out, and the maximum number of reservations has also been issued. 
+</div>
+
+@section Scripts{ 
+    @Scripts.Render("~/Scripts/rateit/rateresource.js")
+    @Scripts.Render("~/Scripts/Admin/AdminCheckout.js")   
+    @Scripts.Render("~/Scripts/Resources/Summary.js")
+    @Scripts.Render("~/Scripts/fancybox/jquery.fancybox.js")
+}
+<script type="text/javascript">
+    SummaryPageVars.userIsAuthenticated = @MTUtil.Strings.StringUtils.JavaScriptBool(WebSecurity.IsAuthenticated)
+    SummaryPageVars.numberOfUserComments = @numberOfUserComments
+    SummaryPageVars.editModeEnabled = (SummaryPageVars.numberOfUserComments > 0);
+</script>

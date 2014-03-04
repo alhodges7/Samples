@@ -1,0 +1,42 @@
+﻿@model Astra.Models.UserMailMessage
+
+@{
+    ViewBag.Title = "Compose a Message";
+}
+
+<h2>SendMessage</h2>
+ 
+@using (Html.BeginForm("SendMessages", "UserMessages", new { message = Model.MessageContent, originatorMid = Astra.Helper.MembershipHelper.CurrentUserName() }, FormMethod.Post, new { @id="formMessageSubmit" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Compose A Message</legend>
+        
+        @if (TempData["messageStatus"] != null)
+        {
+            @Html.Label(TempData["messageStatus"].ToString(), new { style="Color:#CC0074" })
+        }   
+                    
+        <div class="editor-label">
+            @Html.Label("Send To:")
+        </div>
+        @if (ViewBag.RecipientList != null)
+        {
+            @Html.ListBox("RecipientList", null, new { style = "width:300px; height: 100px;" })
+        }
+        <div style="width:800px; height:350px;">@Html.Partial("_MessageCKEditor")</div>
+        
+            <input type="submit" value="Send" />
+        
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Admin", null, null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

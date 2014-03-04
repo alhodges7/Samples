@@ -1,0 +1,91 @@
+﻿@using Astra.Misc
+
+
+
+@{
+    ViewBag.Title = "About Astra";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Message</h1>
+</hgroup>
+
+<table>
+    <tr>
+        <td>
+            <h3>Contributors:</h3>
+            <p>
+                
+    <br />
+                Ashley Clifton
+    <br />
+                David Wintermute
+    <br />
+                Kiril Alexandrov
+    <br />
+                James Doolittle 
+    <br />
+                Fernando Marrero
+    <br />
+                William Deich
+    <br />
+                Terry Johns
+    <br />
+                Collin Yeadon
+    <br />
+                Riduan Chitty
+    <br />
+            </p>
+
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <h3>Version:</h3>
+            <p>
+                @ViewBag.CurrentVersion
+            </p>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+           <div style="font-weight: bold;">
+                <img src="~/Images/help.png" /> 
+                Click <span id="launchAstraHelp" style="color: blue; cursor: pointer;" data-targetUrl="@Url.Content("~/Wiki/Overview.html")">here</span> for help using Astra.
+            </div>
+        </td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <h3>Contact Information:</h3>
+
+            <ul>
+                <li>Email
+                    <a href="mailto:William_Deich@mindtree.com?subject=Astra%20Rocks">William Deich</a>
+                </li>
+                <li>Email 
+                    <a href="mailto:David_Wintermute@mindtree.com?subject=Astra%20Rocks">Dave Wintermute</a>
+                </li>
+                <li>Email
+                    <a href="mailto:Wayland_Clifton@mindtree.com?subject=Astra%20Rocks">Ashley Clifton</a>
+                </li>
+            </ul>
+        </td>
+    </tr>
+
+
+</table>
+
+
+<br />
+<img id="funny" src="~/Content/aspnet.jpg" />
+
+
+@Scripts.Render("~/Scripts/Home/About.js")
+

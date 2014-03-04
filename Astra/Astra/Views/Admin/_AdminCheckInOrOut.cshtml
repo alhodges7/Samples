@@ -1,0 +1,56 @@
+﻿@model Astra.Models.Resource
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Scripts/Admin/_AdminCheckout.js")
+@Styles.Render("~/Content/AstraStyles.css")
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/themes/base/css")
+
+<table class="CheckInOutDialog">
+    <tr>
+        <td>
+            <h4>Title:</h4>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left:20px">
+            @Model.Title
+        </td>
+    </tr>
+    <tr>
+        <td  style="padding-top:25px">
+            <h4>
+                @if (ViewBag.ActionMessage == "Check Out")
+                {
+                    @: To:
+                }
+                else
+                {
+                    @: Checked Out To:
+                }
+            </h4>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-left:50px">
+            @Html.DropDownList("Users")
+            @Html.Hidden("selectedResource") 
+        </td>
+    </tr>
+    <tr>
+        <td align="right" style="padding-top:5px">
+           <div>
+            @if (ViewBag.ActionMessage == "Check Out")
+            {
+               <input type="button" id="check_out" value="Check Out" onclick="AdminCheckoutScript.CheckOut(@Model.ResourceID)"/>
+            }
+            else
+            {
+                <input type="button" id="check_in" value="Check In" onclick="AdminCheckoutScript.CheckIn(@Model.ResourceID)"/>
+            }
+           </div>
+        </td>
+    </tr>
+
+</table>
+
+<div id="errorDiv"></div>

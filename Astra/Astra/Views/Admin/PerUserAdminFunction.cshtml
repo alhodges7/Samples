@@ -1,0 +1,217 @@
+﻿@using Astra.Helper;
+@model Astra.Models.ViewModels.PerUserAdminFunctionViewModel
+@{
+    ViewBag.Title = "PerUserAdminFunction";
+}
+@Scripts.Render("~/Scripts/Admin/PerUserAdminActions.js")
+@Scripts.Render("~/Scripts/rateit/jquery.rateit.js")
+<h2>PerUserAdminFunction</h2>
+
+
+<table style="width: 100%">
+    <tr>
+        <td style="vertical-align: top">
+            <table>
+                <tr>
+                    <th>User Details</th>
+                </tr>
+                <tr>
+                    <td>MID</td>
+                    <td>@MembershipHelper.StripOffDomain(Model.UserMID)</td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td>@Model.UserFirstName</td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>@Model.UserLastName</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>@Model.UserEmail</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>@Model.UserStatus </td>
+                    <td>
+                        @if (Model.UserStatus == "Active")
+                        {
+                            <input style="width:100px; "type="button" class="genButton" value="Deactivate" data-actionurl="@Url.Action("ToggleUserActiveState", "Admin", new { usermid = MembershipHelper.StripOffDomain(Model.UserMID) }) " /> 
+                        }
+                        else if (Model.UserStatus == "Deactivated")
+                        {
+                            <input style="width:100px;" type="button" class="genButton" value="Activate" data-actionurl="@Url.Action("ToggleUserActiveState", "Admin", new { usermid = MembershipHelper.StripOffDomain(Model.UserMID) }) " /> 
+                        }
+                        <br />
+                    </td>
+                </tr>
+                @if (Model.UserSuggestions.Count != 0)
+                {
+                   
+                    <tr>
+                        <th>User Suggestions</th>
+                    </tr> 
+                    
+                    foreach (var suggestion in Model.UserSuggestions)
+                    {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(suggestion.Title, "Edit", "Suggestions", new { id = suggestion.ResourceSuggestionId }, null) Created On @suggestion.CreatedOn.ToLocalTime()  Status =   @switch (suggestion.Status)
+                                                                                                                                                                                       {
+                                                                                                                                                                                           case 0:
+                                @:Approved
+                                                                                                                                                                                           break;
+                                                                                                                                                                                           case 1:
+                                @:Rejected
+                                                                                                                                                                                           break;
+                                                                                                                                                                                           case 2:
+                                @:Pending
+                                                                                                                                                                                                                                                                                                                      break;
+                                                                                                                                                                                       }
+
+                        </td>
+                    </tr>
+                    }
+
+
+                }
+
+
+            </table>
+
+
+        </td>
+
+        <td>
+
+            <table>
+                <tr>
+                    @if (Model.Resources.Count != 0)
+                    {
+                        <th>Resource Details</th>  
+                    }
+
+                </tr>
+                <tr>
+
+                    <td headers="Details">
+
+                        @{
+                           
+                            foreach (var resource in Model.Resources)
+                            {
+                                List<int> selectedIndex = new List<int>() { 0, 1, 2, 3 };
+                                List<string> disabled = new List<string>();
+                                if (resource.UserCheckOut.CheckOutStatus == CheckOutStatus.Unspecified)
+                                {
+                                    selectedIndex.Remove(0);
+                                    disabled.Add("0");
+                                }
+                                if (resource.UserComment.UserComment == null || resource.UserComment.UserComment == string.Empty)
+                                {
+                                    selectedIndex.Remove(1);
+                                    disabled.Add("1");
+                                }
+                                if (resource.UserComment.Rating.UserRating == null || resource.UserComment.Rating.UserRating == 0)
+                                {
+                                    selectedIndex.Remove(2);
+                                    disabled.Add("2");
+                                }
+                                if (resource.UserReservation.ReservationStatus == ReservationStatus.Undefined)
+                                {
+                                    selectedIndex.Remove(3);
+                                    disabled.Add("3");
+                                }
+                                string tabsToDisable = string.Empty;
+                                foreach (var item in disabled)
+                                {
+                                    tabsToDisable += item + ",";
+                                }
+                                tabsToDisable = tabsToDisable.Remove(tabsToDisable.Length - 1);
+	 
+                            <h4 class="ui-widget-header ui-corner-all">@Html.ActionLink(resource.Title, "Summary", "Resources", new { resourceId = resource.ResourceID }, null)</h4>
+                                
+                            <div class="ResourceInfo" data-selectedIndex="@selectedIndex.ElementAt(0)" data-tabsToDisable="@tabsToDisable">
+                                <ul>
+                                    <li><a href="#tabs-1">CheckOuts</a></li>
+                                    <li><a href="#tabs-2">Comments</a></li>
+                                    <li><a href="#tabs-3">Ratings</a></li>
+                                    <li><a href="#tabs-4">Reservation </a></li>
+                                </ul>
+                                @* Checkout Tab *@
+                                <div id="tabs-1" data-selectedIndex="@selectedIndex.ElementAt(0)">
+                                    @if (resource.UserCheckOut.CheckOutStatus != CheckOutStatus.Unspecified)
+                                    {
+
+                                        if (resource.UserCheckOut.CheckOutStatus == CheckOutStatus.CheckedOut)
+                                        {
+                                        <span>Resource Checked Out  On @resource.UserCheckOut.DateCheckedOut.ToLocalTime()   </span> 
+                                        <input type="button" class="genButton" value="Check In for User" data-actionurl="@Url.Action("AdminCheckIn", "CheckOuts", new { mId = resource.UserMID, resourceId = resource.ResourceID }) " /><br />
+                                        }
+
+                                        if (resource.UserCheckOut.CheckOutStatus == CheckOutStatus.CheckedIn)
+                                        {
+                                        <span>Resource Checked Out  On @resource.UserCheckOut.DateCheckedOut.ToLocalTime()   </span> <br />
+                                        <span>Resource Checked In  On @resource.UserCheckOut.DateCheckedIn.ToLocalTime()     </span> <br />
+                                        }
+                                    }
+                                </div>
+
+                                @* Comment Tab *@
+                                <div id="tabs-2">
+                                    @if (resource.UserComment.UserComment != null && resource.UserComment.UserComment != string.Empty)
+                                    {
+                                        <span>Commented on @resource.UserComment.CreatedOn.ToLocalTime()   </span> 
+                                        <input type="button" class="genButton" value="Delete Comment" data-actionurl="@Url.Action("DeleteUserComment", "Admin", new { commentId = resource.UserComment.CommentId }) " />
+                                        <br />
+                                        <span>@resource.UserComment.UserComment              </span>
+                                        <br />
+                                    }
+                                </div>
+
+                                @* Rating Tab *@
+                                <div id="tabs-3">
+                                    @if (resource.UserComment.Rating.UserRating != null && resource.UserComment.Rating.UserRating != 0)
+                                    {
+                                        <span>User Rated the Resource on @resource.UserComment.Rating.CreatedOn.ToLocalTime() </span> <br />
+                                        <span>Rating </span>
+                                        <div class="rateit" data-rateit-value="@resource.UserComment.Rating.UserRating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                                        <br />
+                                        <input type="button" class="genButton" value="Delete Rating" data-actionurl="@Url.Action("DeleteRating", "Admin", new { ratingId = resource.UserComment.Rating.RatingId }) " /><br />
+                                       
+                                    }
+                                </div>
+                                @* Reservation Tab *@
+                                <div id="tabs-4">
+                                    @if (resource.UserReservation.ReservationStatus != ReservationStatus.Undefined)
+                                    {
+                                        <span>User Has Reserved this Resource on @resource.UserReservation.DateReserved.ToLocalTime()</span>
+                                        <br />
+                                    }
+                                </div>
+
+                            </div>
+                    
+                            }
+                         
+              
+                    
+                        }
+
+                    </td>
+
+                </tr>
+
+
+            </table>
+
+
+
+
+
+        </td>
+    </tr>
+
+
+</table>

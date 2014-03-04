@@ -1,0 +1,42 @@
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CreateResourceUsageReport')
+DROP PROCEDURE CreateResourceUsageReport
+GO
+
+CREATE PROCEDURE dbo.CreateResourceUsageReport
+AS
+BEGIN
+
+SELECT Resources.ResourceID, Resources.Title, COUNT(Ratings.RatingId) AS 'Number Of Ratings', COUNT(Reservations.ReservationID) AS 'Number of Reservations', 
+COUNT(Comments.ResourceID) AS 'Number of Comments', COUNT(CheckOuts.ResourceID) AS 'Number of CheckOuts' 
+INTO #GeneralBookUsageInfo
+ FROM Resources 
+FULL JOIN Ratings ON Ratings.ResourceID = Resources.ResourceID 
+FULL JOIN Reservations ON Reservations.ResourceID = Resources.ResourceID 
+FULL JOIN Comments ON Comments.ResourceID = Resources.ResourceID 
+FULL JOIN CheckOuts ON CheckOuts.ResourceID = Resources.ResourceID 
+GROUP BY Resources.Title, Resources.ResourceID;
+
+SELECT CheckOuts.ResourceID, DATEDIFF(day, CheckOuts.DateCheckedOut, GETDATE()) - 14 AS [DaysOverDue]
+INTO #CurrentOverDueBooks
+FROM CheckOuts 
+WHERE (DATEDIFF(day, CheckOuts.DateCheckedOut, GETDATE()) >14) AND (ISNULL(CheckOuts.DateCheckedIn, '1800-1-1') = '1800-1-1');
+
+SELECT CheckOuts.ResourceID, DATEDIFF(day, DateCheckedOut, DateCheckedIn) -14 AS [DaysOverDue]
+INTO #PastOverDueBooks
+FROM CheckOuts 
+WHERE (DATEDIFF(day, CheckOuts.DateCheckedOut, CheckOuts.DateCheckedIn) > 14) AND (ISNULL(CheckOuts.DateCheckedIn, '1800-1-1') != '1800-1-1');
+
+SELECT * INTO  #TotalOverDueBooks
+FROM #CurrentOverDueBooks    
+UNION ALL  
+SELECT * FROM #PastOverDueBooks;
+
+SELECT #TotalOverDueBooks.ResourceID, AVG(#TotalOverDueBooks.DaysOverDue) AS [AvgDaysOverDue]
+INTO #AvgOverDueBooks
+FROM #TotalOverDueBooks
+GROUP BY #TotalOverDueBooks.ResourceID;
+
+SELECT #GeneralBookUsageInfo.*, #AvgOverDueBooks.AvgDaysOverDue 
+FROM #GeneralBookUsageInfo FULL JOIN #AvgOverDueBooks ON #AvgOverDueBooks.ResourceID = #GeneralBookUsageInfo.ResourceID;
+
+END

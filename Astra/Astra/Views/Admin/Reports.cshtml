@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Astra.Models.Report>
+
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Reports</h2>
+
+
+<table>
+    <tr>
+        <th style="width: 200px;">
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>        
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+           <span id="reportLink_@item.ReportID" style="color: blue; cursor: pointer;">
+             @Html.DisplayFor(modelItem => item.Title)
+            </span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>        
+    </tr>
+}
+
+</table>
+
+
+@Scripts.Render("~/Scripts/Shared/Reports.js")

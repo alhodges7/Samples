@@ -1,0 +1,115 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@using Astra.Repositories;
+
+@model Astra.Models.ResourceSuggestion
+<strong>Suggested by:</strong>
+                            @Model.CreatedByMID
+                            <strong>on</strong>
+                            @Model.CreatedOn
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>ResourceSuggestion</legend>
+
+        @Html.HiddenFor(model => model.ResourceSuggestionId)
+
+        @Html.HiddenFor(model => model.CreatedByMID)
+
+        @Html.HiddenFor(model => model.CreatedOn)
+           
+        @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Status)
+            </div>
+            <div>
+                <ul class="suggestion-status">
+                    <li>@Html.RadioButton("Status", (int)ResourceSuggestion.SuggestionStates.Pending) Pending</li>
+                    <li>@Html.RadioButton("Status", (int)ResourceSuggestion.SuggestionStates.Approved) Approved </li>
+                    <li>@Html.RadioButton("Status", (int)ResourceSuggestion.SuggestionStates.Rejected) Rejected </li>
+                </ul>
+                @Html.ValidationMessageFor(model => model.Status)
+            </div>
+        }
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="title-editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="description-editor-field">
+            @Html.TextAreaFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StringPrice)
+        </div>
+        <div class="price-editor-field">
+            @Html.EditorFor(model => model.StringPrice)
+            @Html.ValidationMessageFor(model => model.StringPrice)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReasonNeeded)
+        </div>
+        <div class="reasonneeded-editor-field">
+            @Html.TextAreaFor(model => model.ReasonNeeded)
+            @Html.ValidationMessageFor(model => model.ReasonNeeded)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.URL)
+        </div>
+        <div class="url-editor-field">
+            @Html.EditorFor(model => model.URL)
+            @Html.ValidationMessageFor(model => model.URL)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ISBN)
+        </div>
+        <div class="isbn-editor-field">
+            @Html.EditorFor(model => model.ISBN)
+            @Html.ValidationMessageFor(model => model.ISBN)
+        </div>
+
+        @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.LibrariansNote)
+            </div>
+            <div class="librariansnote-editor-field">
+                @Html.TextAreaFor(model => model.LibrariansNote)
+                @Html.ValidationMessageFor(model => model.LibrariansNote)
+            </div>
+        }
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

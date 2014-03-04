@@ -1,0 +1,46 @@
+﻿@model Astra.Models.Resource
+
+@if (Model.Images.Any())
+{
+    <table>
+        <tr style="height: 150px">
+
+        @{
+            int count = 0;
+            const int IMAGES_IN_ROW = 4;
+        }
+
+
+            @foreach (Astra.Models.ResourceImage image in Model.Images)
+            {
+                if (count >= IMAGES_IN_ROW)
+                {
+                    @:</tr><tr style="height: 150px">
+                    count = 0;
+                }
+        
+                <td style="width: 150px;text-align:center;border:solid;border-width:2px;border-color:#808080">
+
+                    <a class="fancybox ImageLink" rel="additionalImages" href="/@(image.ID)_full.mti" title="@image.Caption">
+	                    <img src="/@(image.ID)_thumb.mti" alt="@image.Caption" />
+                    </a>
+
+                    @image.Caption<br />
+                    @if (ViewData.ContainsKey("isReadOnly") && (bool)ViewData["isReadOnly"] != true)
+                    {
+                        <input type="button" value="Delete" id="imgDelete_@image.ID" class="btn_imgDelete" />                        
+                    }
+                </td>       
+                count++;
+            }
+        </tr>
+    </table>
+}
+else
+{
+    <div style="width:150px;height:150px;background-color:#A8C6EA; border-style:solid; border-color:#808080; border-width:2px">
+		<div style="margin-right: auto;  margin-left: auto; text-align:center; vertical-align:middle; font-family: Arial, Helvetica, sans-serif; margin-top: 60px; color: #666666;">
+			<strong>NO IMAGE</strong>
+		</div>
+	</div>
+}

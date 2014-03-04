@@ -1,0 +1,79 @@
+﻿@using Astra.Models.ViewModels;
+@model Astra.Models.Resource
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@Scripts.Render("~/Scripts/Admin/_CreateOrEdit.js")
+<script type="text/javascript">
+    var getImagesUrl = "@Url.Action("../Resources/GetImageList")";
+    var getCoverImageUrl = "@Url.Action("../Resources/GetCoverImage")";
+    var getCoverImageIdUrl = "@Url.Action("../Resources/GetCoverImageId")";
+    var deleteImageUrl = "@Url.Action("../Image/DeleteImageOperation")";
+    var deleteCoverImageUrl = "@Url.Action("../Image/DeleteCoverImageOperation")";
+    var resourceId = "@(Model.ResourceID)";
+
+
+    
+</script>
+  <div id="imageUploadDiv" style="display: none;">
+            <iframe id="fileUploaderIFrame" style="border-width: 0px" class="frame"  width="325" height="120" 
+    data-coverImageSrc="@Url.Action("UploadCoverImageDialog", "Image", new { resourceId = Model.ResourceID })"
+    data-additionalImageSrc="@Url.Action("UploadImageDialog", "Image", new { resourceId = Model.ResourceID })"></iframe>
+        </div>
+
+        <!--We also need to store the cover image id (to prevent it from getting wiped out on save)-->
+
+<div class="adminEditorBox">
+
+        <div style="position: relative; left: -10px; top: 0px;">
+            <table style="width: 100%">
+                <tr>
+                    <td style="width: 40%;">
+                        <div class="adminSectionTitle">Images</div>
+                    </td>
+                    <td style="width: 60%; text-align: right">
+                        <img id="Toggle_ImagesSection" class="AdminSectionToggleButton" src="~/Images/bullet_toggle_plus.png" style="cursor: pointer;" title="expand / collapse" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="ImagesSection" style="display: none">
+
+
+
+
+<div class="">
+        <div class="editor-label">
+            @Html.Label("Cover Image")
+        </div>
+        <br />
+
+        <div id="coverImageDiv">
+            @Html.Partial("../Resources/_SingleCreateEditCoverImage", new ResourceImageViewModel() { Image = Model.CoverImage, ResourceId = Model.ResourceID }, new ViewDataDictionary { { "isReadOnly", false } })
+        </div>
+        <br />
+
+        <input type="button" value="Upload Cover Image" id="btn_coverImageUpload" />
+        <br />
+  </div>
+<div class="">
+        <div class="editor-label">
+            @Html.Label("Additional Images")
+        </div>
+        <br />
+
+        <div id="imageList">
+            @Html.Partial("../Resources/_ImageList", Model, new ViewDataDictionary { { "isReadOnly", false } })
+        </div>
+
+        <br />
+
+        <input type="button" value="Upload More Images" id="btn_imageUpload" />
+</div>
+
+</div>
+
+</div>
+    

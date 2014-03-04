@@ -1,0 +1,124 @@
+﻿@using Astra.Helper
+
+@model Astra.Helper.AstraExceptionWrapper
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/Scripts/jquery-1.9.1.js")
+
+    <script type="text/javascript">
+       
+        function showErrorDetails() {
+            //alert('yap!');
+            $("#ErrorDetailsPane").toggle();
+        }
+
+        function showFullTrace() {
+            $("#StackTracePane").height("100%");
+            $("#ShowFullTraceLink").hide();
+        }
+
+    </script>
+
+    <style type="text/css">
+        td {
+            padding-left: 5px; 
+            padding-right: 5px;
+            vertical-align: top;
+        }
+    </style>
+
+    <title>UXPError</title>
+</head>
+<body style="margin: 5px;">
+    <div>
+        <div style="background-color:#9B9B9B"><img src="~/Images/Astra_Logo2.png" /> </div>
+
+        
+        <H1>An unexpected error has occurred...</H1>
+
+        @if(ViewBag.showErrorDetail == true) 
+        {
+            <div style="padding-top: 10px; font-weight: bold;">Click <span style="color: blue; font-decoration: underline; cursor: pointer;" onclick="showErrorDetails()">here</span> to see more information...</div>            
+        }
+
+        <div id="ErrorDetailsPane" style="display: none; padding-top: 10px; padding-left: 15px; padding-right: 15px;">
+
+            <table cellpadding="2" cellspacing="2" border="0">
+
+                <tr>
+                    <td style="width: 130px;">Event Code:</td>
+                    <td style="color:red;">
+                        @(Model.Guid)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Time:</td>
+                    <td>
+                        @(Model.ErrorDateUTC)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>User MID:</td>
+                    <td>
+                        @(Model.MID)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Url:</td>
+                    <td>
+                        @(Model.ReferrerUrl)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Error Description:</td>
+                    <td style="color:red;">
+                        @(Model.ErrorMessage)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Stack Trace:</td>
+                    <td style="">
+                        <div id="StackTracePane" style="color:red; height: 55px; overflow: hidden;">
+                        @(Model.StackTrace)
+                        </div>
+                        <div id="ShowFullTraceLink" style="padding-top: 4px; font-decoration: underline; cursor: pointer; color: blue; font-size: 12px; font-weight: bold" onclick="showFullTrace()">show more...</div>
+                    </td>
+                </tr>
+
+            </table>
+
+           
+
+        </div>           
+        
+
+        <div style="padding-top: 25px; font-weight: bold;">
+            Click @Html.ActionLink("here", "Index", "Home", null, null)
+            to return to Astra...
+
+        </div>
+
+        <div style="padding-top: 25px; padding-bottom: 300px; font-weight: bold;">
+            <img src="~/Images/tech_support.jpg" />
+        </div>
+
+
+
+    </div>
+</body>
+</html>

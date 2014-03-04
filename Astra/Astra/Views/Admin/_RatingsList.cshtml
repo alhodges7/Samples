@@ -1,0 +1,37 @@
+﻿
+@model List<Astra.Models.ViewModels.RatingsListViewModel>
+
+
+<b>Remove Ratings</b>
+<table>
+
+@if (Model.Count >0)
+   
+        {   
+    <tr>
+    <th>User</th>
+    <th style="padding:5px">Rating</th>
+    </tr>
+            foreach (var rating in Model)
+    {
+       <tr>    
+            <td>
+                         
+                @Html.Raw(rating.Name)
+
+            </td>
+            <td style="padding:5px">
+                @rating.UserRating
+            </td>
+            <td>
+                 <input type="button" id="btn_removeRating-@rating.RatingId" class="btn_removeRating" data-actionurl="@Url.Action("DeleteRating", "Admin", new { ratingId = rating.RatingId })" value="Delete" />
+            </td>
+        </tr>  
+    }
+        }
+        else
+        {
+          <tr><td> (not yet rated)</td></tr>   
+        }      
+    </table>
+ 

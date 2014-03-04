@@ -1,0 +1,43 @@
+﻿@using Astra.CompositeRepository;
+@using Astra.Helper;
+
+@model Astra.Models.UserMailMessage
+
+@{
+    string originatorLabel;
+
+    if (Model.Type == UserMailMessageType.SystemToUser)
+    {
+        originatorLabel = "Astra";
+    }
+    else
+    {
+      using (var repository = new ScopedCompositeRepository().Repositories)
+      {
+          var profile = repository.UserProfileRepository.FindProfileByMID(Model.OriginatorMid);
+          if (profile != null)
+          {
+              originatorLabel = profile.FirstName + " " + profile.LastName;
+          }
+          else
+          {
+              originatorLabel = Model.OriginatorMid;
+          }
+      }   
+    }
+}
+
+<table style="border-width:0px;border-color:black;border-radius:5px;border-style:solid;margin-left:20px;margin-right:auto;margin-top:10px;margin-bottom:10px;width:600px">
+    <tr>
+        <td style="width:24px;">
+            @Html.CheckBox(Model.MessageId.ToString(), new {@class="MessageCheckbox" })
+        </td>
+        <td style="text-align:left">
+            <span style="font-size:small">
+                <strong>From: @originatorLabel</strong><br />
+                <strong>On: @Astra.Helper.OtherHelpers.StandardDateTimeFormat(Model.SentOn)</strong><br />
+            </span>
+            @Html.Raw(OtherHelpers.ParseUserText(Model.MessageContent))
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,18 @@
+﻿@{
+    if (WebSecurity.IsAuthenticated && Astra.Helper.MembershipHelper.UserHasRoles(Astra.Helper.MembershipHelper.CurrentUserName(), new string[] { Astra.Helper.MembershipHelper.ROLE_BASIC_USER }))
+    {
+        var userRating = ViewBag.userRating;
+        string visibleReset = string.Empty;
+        if (userRating == 0)
+        {
+            visibleReset = "false";
+        }
+        else
+        {
+            visibleReset = "true";
+        }
+    <div class="rateit" data-rateit-value="@userRating" data-actionurl="@Url.Action("RateResource", "Rating")" 
+        data-resourceId="@ViewBag.resourceId" data-rateit-resetable="@visibleReset"></div>
+    }
+}
+

@@ -1,0 +1,348 @@
+﻿@using Astra.Helper;
+@using Astra.Repositories;
+@using Astra.Controllers;
+
+@model Astra.Models.ResourceSuggestion
+
+@Scripts.Render("~/Scripts/Suggestions/Suggestion.js")
+@Styles.Render("~/Content/Suggestions/SuggestionStyles.css")
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+@Scripts.Render("~/Scripts/ckeditor/adapters/jquery.js")
+
+@if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+{
+
+@*----------DIV for admin / librarian display table----------------------------------------------*@
+    <div id="displayDiv-@Model.ResourceSuggestionId">
+
+    <table class="@Model.GetStatusString()" style="width: 800px;  border-color: #EEEEEE; border-radius: 15px; margin-left: 20px; margin-top: 20px; padding: 10px; vertical-align: top;">
+            <tr>
+                <td style="vertical-align: top;">
+                    <strong>Created by:</strong>
+                    @UsersController.GetUserNameByMID(Model.CreatedByMID)
+                    <strong>on</strong>
+                    @Model.CreatedOn
+                </td>
+                <td style="width: 50%;">
+                    <strong>Status:</strong> @Model.GetStatusString()
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>Title:</strong> @Model.Title
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>ISBN:</strong>
+                    @if (Model.ISBN.IsEmpty())
+                    {
+                        @: unknown
+                    }
+                    else
+                    {
+                        @Model.GetFormattedISBN()
+                    }
+                </td>
+                <td style="width: 50%;"><strong>Price:</strong> @Model.StringPrice </td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>Description:</strong>
+                    <div style="margin-left: 20px; margin-top: 10px">
+                        @Html.Raw(Model.Description)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>Reason Needed:</strong>
+
+                    <div style="margin-left: 20px; margin-top: 10px">
+                        @Html.Raw(Model.ReasonNeeded)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>URL:</strong>
+                    @if (Model.URL.IsEmpty())
+                    {
+                        @: none 
+                    }
+                    else
+                    {
+                        string webURL = Model.URL.ToString();
+                        if (webURL.Contains("http://") == false)
+                        {
+                            webURL = "http://" + webURL;
+                        }
+                        
+                        @Html.Raw("<a href=" + "\"" + webURL + "\">" + webURL + "</a>");
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>Librarian's Note:</strong>
+                    <br />
+                    <div style="margin-left: 20px; margin-top: 10px">
+                    @if (Model.LibrariansNote.IsEmpty())
+                    {
+                        @: none 
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.LibrariansNote)
+                    }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="leftButtonPanelDiv-@Model.ResourceSuggestionId">
+                    @if (Model.Status == (int)ResourceSuggestion.SuggestionStates.Pending)
+                    {
+                    <input id="" data-actionurl="@Url.Action(
+                        "SetStatus", "Suggestions", new
+                        {
+                            suggestionId = Model.ResourceSuggestionId,
+                            newStatus = (int)ResourceSuggestion.SuggestionStates.Approved
+                        })"  class="ApproveAction" type="button" value="Approve" />
+                    <input id="" data-actionurl="@Url.Action(
+                        "SetStatus", "Suggestions", new
+                        {
+                            suggestionId = Model.ResourceSuggestionId,
+                            newStatus = (int)ResourceSuggestion.SuggestionStates.Rejected
+                        })"  class="RejectAction" type="button" value="Reject" />
+                    }
+                    </div>
+                </td>
+                <td style="padding-top:15px;text-align:right">
+                    <div id="rightButtonPanelDiv-@Model.ResourceSuggestionId">
+                    <input id="deleteActionButton-@Model.ResourceSuggestionId" class="DeleteAction" type="button" value="Delete" />
+                    <input data-id="@Model.ResourceSuggestionId" class="EditAction" type="button" value="Edit Suggestion" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+            <td style="margin-left: 20px;">
+@*----------DIV for admin / librarian delete ------------------------------------------------------*@
+            <div style="display:none" id="deleteDiv-@Model.ResourceSuggestionId">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                <fieldset>
+                    @Html.HiddenFor(model => model.ResourceSuggestionId)
+                    @Html.HiddenFor(model => model.Title)
+                    @Html.HiddenFor(model => model.Status)
+                    @Html.HiddenFor(model => model.CreatedByMID)
+                    <input style="display:none;" id="EditType" name="EditType" value="@SuggestionsController.EDIT_TYPES.DELETE.ToString()" />
+                    <input style="display:none;" id="StatusSeletionCode" name="StatusSeletionCode" value="@ViewBag.StatusSeletionCode" />
+                    Would you like to provide feedback to the user? (Optional)
+                    <textarea id="Feedback" name="Feedback" rows="2"></textarea>
+                    <input type="submit" value="Confirm Delete" />
+                    <input data-id="@Model.ResourceSuggestionId" class="GridEditCancelAction" type="button" value="Cancel" />
+                </fieldset>
+            }
+            </div>
+            </td>
+        </tr>
+      </table>
+    </div>
+    
+@*----------DIV for edit (Admin / librarian only) -----------------------------------------------*@
+    <div style="display:none" id="editDiv-@Model.ResourceSuggestionId">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+                @Html.HiddenFor(model => model.ResourceSuggestionId)
+                @Html.HiddenFor(model => model.CreatedByMID)
+                @Html.HiddenFor(model => model.CreatedOn)
+                <input style="display:none;" id="EditType" name="EditType" value="@SuggestionsController.EDIT_TYPES.EDIT.ToString()" />
+                <input style="display:none;" id="StatusSeletionCode" name="StatusSeletionCode" value="@ViewBag.StatusSeletionCode" />
+
+                <table style="width: 1200px;  background-color: #EEEEEE; border-color: #EEEEEE; border-radius: 15px; margin-left: 20px; margin-top: 20px; padding: 10px; vertical-align: top;">
+                    <tr>
+                        <td style="vertical-align: top; text-align:center">
+                            <strong>Created by:</strong>
+                            @UsersController.GetUserNameByMID(Model.CreatedByMID)
+                            <strong>on</strong>
+                            @Model.CreatedOn
+                        </td>
+                        <td style="text-align: center; width: 50%;">
+                            <strong>Status:</strong>
+                            <ul class="suggestion-status">
+                                <li>@Html.RadioButton("Status", (int)ResourceSuggestion.SuggestionStates.Pending) Pending</li>
+                                <li>@Html.RadioButton("Status", (int)ResourceSuggestion.SuggestionStates.Approved) Approved </li>
+                                <li>@Html.RadioButton("Status", (int)ResourceSuggestion.SuggestionStates.Rejected) Rejected </li>
+                            </ul>
+                            @Html.ValidationMessageFor(model => model.Status)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="title-admineditor-field">
+                                <strong>Title:</strong> 
+                                @Html.EditorFor(model => model.Title)
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="price-adminisbn-field">
+                                <strong>ISBN:</strong>
+                                @Html.EditorFor(model => model.ISBN)
+                                @Html.ValidationMessageFor(model => model.ISBN)
+                            </div>
+                        </td>
+                        <td style="width: 50%;">
+                            <div class="price-admineditor-field">
+                                <strong>Price:</strong>
+                                @Html.EditorFor(model => model.StringPrice)
+                                @Html.ValidationMessageFor(model => model.StringPrice)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Description:</strong>
+                            <div style="margin-left: 20px;" class="description-editor-field">
+                                @Html.Raw(Html.TextAreaFor(model=>model.Description, new{@class="ckeditor", ID="TA", style="word-wrap:break-word;"}))
+                                @Html.ValidationMessageFor(model => model.Description)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Reason Needed:</strong>
+
+                            <div style="margin-left: 20px;" class="reasonneeded-editor-field">
+                                @Html.Raw(Html.TextAreaFor(model => model.ReasonNeeded, new{@class="ckeditor", style="word-wrap:break-word;"}))
+                                @Html.ValidationMessageFor(model => model.ReasonNeeded)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div  class="url-admineditor-field">
+                                <strong>URL:</strong>
+                                @Html.EditorFor(model => model.URL)
+                                @Html.ValidationMessageFor(model => model.URL)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Librarian's Note:</strong>
+                            <div style="margin-left: 20px;" class="librariansnote-editor-field">
+                                @Html.Raw(Html.TextAreaFor(model => model.LibrariansNote, new{@class="ckeditor", style="word-wrap:break-word;"}))
+                                @Html.ValidationMessageFor(model => model.LibrariansNote)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Would you like to provide feed back to the user? (Optional)<br />
+                            <textarea style="margin-left: 20px; width:96%" id="Feedback" name="Feedback"></textarea>
+                            <br />
+                           @* <input type="submit" value="Save Changes" style="margin-left: 20px;" />*@
+                            <input data-id="@Model.ResourceSuggestionId" class="SaveAction" type="submit" value="Save Changes" style="margin-left: 20px;" />
+                            <input data-id="@Model.ResourceSuggestionId" class="CancelAction" type="button" value="Cancel" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </div>
+}
+else
+{   @*----------Table for regular users -------------------------------------------------------*@ 
+    <div id="userDisplayDiv-@Model.ResourceSuggestionId">
+    <table class="@Model.GetStatusString()" style="width: 800px;  border-color: #EEEEEE; border-radius: 15px; margin-left: 20px; margin-top: 20px; padding: 10px; vertical-align: top;" >
+        <tr>
+            <td><strong>Title:</strong> @Model.Title</td>
+            <td style="width: 50%;">
+                <table style="width:100%">
+                    <tr>
+                        <td >
+                            <strong>Status:</strong> 
+                            @Model.GetStatusString()
+                        </td>
+                        <td style="text-align:right">
+                            <input id="userDeleteActionButton-@Model.ResourceSuggestionId" class="UserDeleteAction" type="button" value="Delete" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>ISBN:</strong>
+                @if (Model.ISBN.IsEmpty())
+                {
+                    @: unknown 
+                }
+                else
+                {
+                    @Model.GetFormattedISBN()
+                }
+            </td>
+            <td style="width: 50%;">
+                <strong>Price:</strong> @Model.StringPrice
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Description:</strong><br />
+                <div style="margin-left: 20px; margin-top: 10px">@Html.Raw(Model.Description)</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Reason for purchase:</strong>
+                <br />
+                <div style="margin-left: 20px; margin-top: 10px">@Html.Raw(Model.ReasonNeeded)</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Web URL:</strong>
+                    @if (Model.URL.IsEmpty())
+                    {
+                        @: none 
+                    }
+                    else
+                    {
+                        string webURL = Model.URL.ToString();
+                        if (webURL.Contains("http://") == false)
+                        {
+                            webURL = "http://" + webURL;
+                        }
+                        
+                        @Html.Raw("<a href=" + "\"" + webURL + "\">" + webURL + "</a>");
+                    }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center; font-family:'Times New Roman'; font-weight:bold; font-size: large; }">
+@*----------DIV for user Delete Suggestion Option ---------------------------------------------*@
+            <div style="display:none" id="userDeleteDiv-@Model.ResourceSuggestionId">
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+                    <fieldset>
+                        @Html.HiddenFor(model => model.ResourceSuggestionId)
+                        @Html.HiddenFor(model => model.CreatedByMID)
+                        <input style="display:none;" id="EditType" name="EditType" value="@SuggestionsController.EDIT_TYPES.DELETE.ToString()" />
+
+                        Are you Sure you want to delete this suggestion?
+                        <br />
+                        <input type="submit" value="Yes" />
+                        <input id="userCancelActionButton-@Model.ResourceSuggestionId" class="UserCancelAction" type="button" value="No" />
+                    </fieldset>
+                }
+            </div>
+            </td>
+        </tr>
+    </table>
+    </div>
+}
+
+<br />
+
+<p>
+     @Html.ActionLink("Back to List", "Index", "Suggestions", new { suggestionStatus = ViewBag.StatusSeletionCode, displayType = ViewBag.CurrentDisplayType }, null) 
+</p>

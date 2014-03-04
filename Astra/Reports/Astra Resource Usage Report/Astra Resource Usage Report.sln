@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Astra Resource Usage Report", "Astra Resource Usage Report\Astra Resource Usage Report.rptproj", "{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.Debug|Default.ActiveCfg = Debug
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.Debug|Default.Build.0 = DebugLocal
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.Debug|Default.Deploy.0 = DebugLocal
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.DebugLocal|Default.Build.0 = DebugLocal
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.Release|Default.ActiveCfg = Release
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.Release|Default.Build.0 = Release
+		{89F86FE8-FD1F-4BD5-8A04-D09CC180FDBC}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

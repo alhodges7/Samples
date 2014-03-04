@@ -1,0 +1,52 @@
+﻿@model Astra.Models.ViewModels.NewResourcesNotification
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    
+    <img src="~/Content/images/mindtreeheaderfooter.png" />
+    <meta name="viewport" content="width=device-width" />
+    <title>New Resources Notification</title>
+</head>
+<body><div style="width:794px; text-align:center">
+   <table style="width: inherit; padding-top: 0in; padding-right: 5.4pt; padding-bottom: 0in; padding-left: 5.4pt; border-top-color: gray; border-right-color: gray; border-bottom-color: currentColor; border-left-color: gray; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: medium; border-left-width: 1pt; border-top-style: solid; border-right-style: solid; border-bottom-style: none; border-left-style: solid;">
+       <tr hidden="">
+           <td><h2 style="Color:#CC0074; text-align:center">Dear @Html.Raw(Model.User.FirstName),</h2></td>
+       </tr>
+       <tr>
+           <td> <h4>The following Resources have been added to the Astra Library:</h4></td>
+       </tr>
+       <tr>
+           <td>
+    <hr /></td>
+       </tr>
+       
+        @foreach (Resource r in Model.NewResources)
+        {
+            <tr>
+                <td>
+            @if (r.CoverImage !=null && r.CoverImage.ImageThumbnail != null)
+            {
+                
+                @:<div style="font-weight: bold">@Html.ActionLink(r.CoverImage.ImageThumbnail + " "+ r.Title, "Summary", "Resources", new{ resourceId = r.ResourceID }, null)</div>    
+            }
+            else{
+                @:<div style="font-weight: bold">@Html.ActionLink(r.Title, "Summary", "Resources", new{ resourceId = r.ResourceID }, null)</div>    
+            }
+                    </td>
+          </tr>
+           
+   
+        }
+       <tr><td><hr /></td></tr>
+   </table>
+<br />
+<img src="~/Content/images/mindtreeheaderfooter.png" />
+    </div>
+</body>
+</html>

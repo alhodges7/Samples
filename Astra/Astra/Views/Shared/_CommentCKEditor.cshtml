@@ -1,0 +1,8 @@
+﻿@Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+@Scripts.Render("~/Scripts/ckeditor/adapters/jquery.js")
+@Scripts.Render("~/Scripts/ckeditor/adapters/Summary.js")
+
+@model Comment
+
+
+@Html.Raw(Html.TextAreaFor(x=>x.UserComment, new{@class="ckeditor", style="word-wrap:break-word;"}))

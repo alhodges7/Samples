@@ -1,0 +1,22 @@
+﻿@model Astra.Models.ViewModels.KeyWordPercentageDataBank
+
+@{
+    ViewBag.Title = "KeyWord Cloud";
+}
+
+@Styles.Render("~/Content/KeyWordCloud/KeyWordCloudStyles.css")
+
+<h2>Key Word Cloud</h2>
+
+<div class="KeyWordCloudClass">
+@foreach (var item in Model.KeyWordPercentageList)
+{
+    if (item.NumberOfTimesUsed > 0)
+    {
+        <span style="font-size:@item.CalculatedFontSize()">
+        @Html.ActionLink(item.Word,"QuickSearch", "Resources", new { keyWords = item.Word },null)
+        </span>
+        @: &nbsp;
+    }
+}
+</div>

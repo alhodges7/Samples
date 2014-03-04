@@ -1,0 +1,14 @@
+﻿@Scripts.Render("~/Scripts/Resources/AdvancedSearch.js")
+
+@{
+    ViewBag.Title = "Advanced Search";
+    }
+
+@Html.DropDownList("resourceTypes", ViewBag.ResourceTypes as SelectList,"Choose ResourceType",new {id="selectResource" })
+
+<div id="searchfields" data-actionurl ="@Url.Action("LoadSearchFields","Resources")" >
+
+</div>
+
+
+

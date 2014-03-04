@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Astra.Models.KeyWord>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Word)
+        </th>
+        <th>Links</th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var item in Model) {
+    
+    
+        
+    int linkCount = 0;
+    foreach (var tally in ViewBag.Tallies)
+    {
+        if (tally.KeyWordID == item.KeyWordID)
+        {
+            linkCount = tally.LinkCount;
+            break;
+        }
+    }   
+        
+    
+    
+    
+    
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Word)
+        </td>
+        <td>@Html.ActionLink(linkCount.ToString(), "QuickSearch", new { controller = "Resources", keyWords = item.Word })</td>
+        <td>
+            <a href="javascript:confirmKeyWordDelete('@Html.Raw(item.Word)', '@Html.Raw(item.KeyWordID.ToString())')">Delete</a> 
+            | @Html.ActionLink("Merge...", "Merge", new { id=item.KeyWordID })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+<input type="hidden" value="@Url.Action("Delete")" id="DataIsland1" />
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/KeyWords/KeyWords.js");
+}

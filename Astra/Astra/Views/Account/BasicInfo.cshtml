@@ -1,0 +1,55 @@
+﻿@using Astra.Helper;
+
+@model Astra.Models.UserProfile
+
+@{
+    ViewBag.Title = "Account Information";
+}
+
+<h2>Account information for @Model.FirstName @Model.LastName</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>User Profile for @Html.Encode(Model.FirstName + " " + Model.LastName)</legend>
+        <div>You are logged in as <strong>@MembershipHelper.StripOffDomain(User.Identity.Name)</strong>.</div>
+        <br />
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.MID)
+
+        <div class="editor-label">
+            @Html.Label("First Name")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+       
+        <div class="editor-label">
+            @Html.Label("Last Name")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        
+        <div class="editor-label">
+            @Html.Label("Email")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <div>
+            <input type="submit" value="Save" />
+        </div>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

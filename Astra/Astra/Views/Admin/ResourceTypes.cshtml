@@ -1,0 +1,17 @@
+﻿@using Astra.Models;
+@model List<Astra.Models.ResourceType>
+@{
+    ViewBag.Title = "ResourceTypes";
+}
+
+<h2>ResourceTypes</h2> @Html.ActionLink("Add New Resource Type", "Create", "ResourceTypes", null, null)
+<table class="standardTable">
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @item.Name
+        </td>
+    </tr>    
+}
+</table>

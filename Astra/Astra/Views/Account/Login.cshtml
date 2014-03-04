@@ -1,0 +1,45 @@
+﻿@model Astra.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in:";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<hgroup class="title" style="margin-top:20px;">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+<section id="loginForm">
+@using (Html.BeginForm(new { returnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.MID)
+                @Html.TextBoxFor(m => m.MID, new { style = "width: 300px; height: 32px" })
+                @Html.ValidationMessageFor(m => m.MID)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { style = "width: 300px; height: 32px" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+            </li>
+        </ol>
+        <input type="submit" value="Log in" />
+    </fieldset>
+    <p>
+        @Html.ActionLink("Register", "Register") if you don't have an account.
+    </p>
+
+}
+</section>

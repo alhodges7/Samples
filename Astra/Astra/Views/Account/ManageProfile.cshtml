@@ -1,0 +1,14 @@
+﻿@model Astra.Models.UserProfile
+
+@{
+    ViewBag.Title = "ManageProfile";
+}
+
+<h2>Manage Profile</h2>
+
+<ul class="actionList">
+    <li>@Html.ActionLink("Change Basic Information", "BasicInfo")</li>
+    <li>@Html.ActionLink("Change Password", "ManagePassword")</li>
+</ul>
+
+

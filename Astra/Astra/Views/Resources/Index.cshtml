@@ -1,0 +1,110 @@
+@using Astra.Models;
+@using Astra.Models.ViewModels;
+@using MTUtil.Strings;
+@using Astra.Helper;
+@model Astra.Models.ViewModels.IndexPagerViewModel
+
+
+<h2>@ViewBag.Title</h2>
+@if (ViewBag.Message != null && (ViewBag.Message as UserMessage).CurrentMessageType == UserMessage.UserMessageType.GOOD)
+{
+    <h3 class="goodMessage">@((ViewBag.Message as UserMessage).Message)</h3>
+}
+else if (ViewBag.Message != null && (ViewBag.Message as UserMessage).CurrentMessageType == UserMessage.UserMessageType.BAD)
+{
+    <h3 class="badMessage">@((ViewBag.Message as UserMessage).Message)</h3>
+}
+
+<table>
+    <tr>
+        <td>
+            @Html.Partial("~/Views/Search/_ResourceSearcher.cshtml")
+        </td>
+        <td>
+            @if (Model != null && Model.RecentlyViewed != null && Model.RecentlyViewed.Count() > 0)
+            {
+                @Html.Partial("_RecentlyViewedView", Model)
+            }
+        </td>
+    </tr>
+</table>
+
+@if (Model.SearchResults.Any())
+{
+<div id="basicUserResourceList">
+        <div style="height: 30px;">
+            <div class="pagedList" style="width: 350px; margin-right: 20px; float: right">
+            @if (Model.CurrentlyBrowsingFrom == Astra.Models.ViewModels.IndexPagerViewModel.BrowsingFrom.Index)
+            {
+                @Html.PagedListPager(Model.SearchResults, page => Url.Action("Index", new { page, Model.NumResultsPerPage, Model.SortBy }),
+                    PagedListRenderOptions.MinimalWithItemCountText);
+            }
+            else if (Model.CurrentlyBrowsingFrom == Astra.Models.ViewModels.IndexPagerViewModel.BrowsingFrom.KeywordSearch)
+            {
+                @Html.PagedListPager(Model.SearchResults, page => Url.Action("QuickSearch", new { keyWords = Model.Keywords, pageNumber = page, Model.NumResultsPerPage, Model.SortBy }),
+                    PagedListRenderOptions.MinimalWithItemCountText);
+            }
+            else if (Model.CurrentlyBrowsingFrom == Astra.Models.ViewModels.IndexPagerViewModel.BrowsingFrom.AdvancedSearch)
+            {
+                @Html.PagedListPager(Model.SearchResults, page => Url.Action("AdvSearchUsePrevious", new { useAdvancedSearchValues = true, pageNumber = page, Model.NumResultsPerPage, Model.SortBy }),
+                    PagedListRenderOptions.MinimalWithItemCountText);
+            }
+            </div>
+            <div class="infoBox1" style="float: right">
+                <br />
+                Results Per Page:
+            @Html.DropDownListFor(model => Model.NumResultsPerPage, Model.DdlResultsPerPage, new { @id = "ddlResultsPerPage" })
+                Sort by:
+            @Html.DropDownListFor(model => Model.SortBy, Model.DdlSortBy, new { @id = "ddlSortBy" })
+                @Html.ValidationMessageFor(model => Model.NumResultsPerPage)
+                @Html.ValidationMessageFor(model => Model.SortBy)
+                @Html.Hidden("hdnResultsPerPage")
+                @Html.Hidden("hdnSortBy")
+        </div>
+    </div>
+
+    @foreach (var resource in Model.SearchResults)
+    {
+        <div class="infoBox">
+        @Html.Partial("_ResourceThumbnail", resource)
+        </div>
+    }
+
+        <div style="height: 90px;">
+            <div class="pagedList" style="width: 350px; margin-right: 20px; float: right">
+            @if (Model.CurrentlyBrowsingFrom == Astra.Models.ViewModels.IndexPagerViewModel.BrowsingFrom.Index)
+            {
+                @Html.PagedListPager(Model.SearchResults, page => Url.Action("Index", new { page, Model.NumResultsPerPage, Model.SortBy }),
+                    PagedListRenderOptions.MinimalWithItemCountText);
+            }
+            else if (Model.CurrentlyBrowsingFrom == Astra.Models.ViewModels.IndexPagerViewModel.BrowsingFrom.KeywordSearch)
+            {
+                @Html.PagedListPager(Model.SearchResults, page => Url.Action("QuickSearch", new { keyWords = Model.Keywords, pageNumber = page, Model.NumResultsPerPage, Model.SortBy }),
+                    PagedListRenderOptions.MinimalWithItemCountText);
+            }
+            else if (Model.CurrentlyBrowsingFrom == Astra.Models.ViewModels.IndexPagerViewModel.BrowsingFrom.AdvancedSearch)
+            {
+                @Html.PagedListPager(Model.SearchResults, page => Url.Action("AdvSearchUsePrevious", new { pageNumber = page, Model.NumResultsPerPage, Model.SortBy }),
+                    PagedListRenderOptions.MinimalWithItemCountText);
+            }
+        </div>
+    </div>
+
+</div>
+}
+else
+{
+    <div style="text-align: center; margin-top: 40px">This search returned no results.</div>   
+}
+@Html.Hidden("hdnBrowsingFrom")
+@Scripts.Render("~/Scripts/Resources/Index.js")
+@Scripts.Render("~/Scripts/rateit/jquery.rateit.js")
+@Scripts.Render("~/Scripts/rateit/rateresource.js")
+
+<script type="text/javascript">
+    @if (Model.CurrentlyBrowsingFrom == IndexPagerViewModel.BrowsingFrom.KeywordSearch)
+    {
+        @:IndexPageVars.keywordSearchText = "@Model.Keywords";
+    }
+    hdnBrowsingFrom.val = "@Model.CurrentlyBrowsingFrom";
+</script>

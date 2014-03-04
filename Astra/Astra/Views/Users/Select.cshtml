@@ -1,0 +1,97 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@model MyCheckOutsViewModel
+
+@Scripts.Render("~/Scripts/Users/UsersList.js")
+
+<h2>@ViewBag.Message</h2>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<h2>Active Check Outs</h2><br />
+
+@if (Model.ActiveCheckOuts.Count > 0)
+{
+<table class="standardTable">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Checked Out
+        </th>
+            @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+            {
+        <th>
+            Action
+        </th>}
+    </tr>
+
+@foreach (var item in Model.ActiveCheckOuts)
+{
+     <tr>
+        <td>
+            @Html.ActionLink(item.Resource.Title, "Summary", "Resources", new { resourceId = item.ResourceID }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCheckedOut)
+        </td>
+           @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+            {
+        <td>
+                <input type="button" class="btnCheckIn" value="Check In" data-actionurl="@Url.Action("AdminCheckIn", "CheckOuts", new { mId = item.UserMID, resourceId = item.ResourceID }) " />
+        </td>}
+    </tr>
+}
+
+</table>
+}
+else
+{
+    @:(no active checkouts)
+}
+
+<h2>Check Out History</h2><br />
+@if (Model.CheckOutHistory.Count > 0)
+{
+<table class="standardTable">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Checked Out
+        </th>
+        <th>
+            Checked In
+        </th>
+    </tr>
+
+@foreach (var item in Model.CheckOutHistory)
+{
+     <tr>
+        <td>
+            @Html.ActionLink(item.Resource.Title, "Summary", "Resources", new { resourceId = item.ResourceID }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCheckedOut)
+        </td>
+        <td>
+             @if (item.DateCheckedIn.Year < 1900)
+             {
+                 @:(not checked in)
+             }else
+             {
+            @Html.DisplayFor(modelItem => item.DateCheckedIn)
+             }
+        </td>
+    </tr>
+}
+
+</table>
+}
+else
+{
+    @:(@ViewBag.FullName has no checkout history)   
+}

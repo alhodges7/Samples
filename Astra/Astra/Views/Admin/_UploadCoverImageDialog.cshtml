@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Image Uploader</title>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/Scripts/Admin/_UploadImageDialog.js")
+    </head>
+    <body  style="margin-top:0px">
+        @using (Html.BeginForm("UploadImageOperation", "Image", 
+            new { resourceId = (int)Model, isCoverImage = true },
+            FormMethod.Post,
+            new { enctype = "multipart/form-data", id = "uploadForm" }))
+        {
+            <table>
+                <tr>
+                    <td>
+                        File:
+                    </td>
+                    <td>
+                         <input type="file" name="FileUpload" id="FileUpload"  />
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input role="button" aria-disabled="false" type="submit" id="formSubmit" value="Upload Image" style="position:absolute; right:10px; width:120px" />
+        }
+    </body>
+</html>

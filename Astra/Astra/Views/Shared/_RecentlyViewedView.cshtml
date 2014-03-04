@@ -1,0 +1,30 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@using Astra.CompositeRepository;
+@using MTUtil.Strings;
+
+
+@model Astra.Models.ViewModels.IndexPagerViewModel
+ @if (Model != null && Model.RecentlyViewed != null)
+ {
+    <table>
+        <tr>
+        <td style="padding-left:20px">
+            <h2>Recently Viewed:</h2>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left; padding-left:20px" colspan="2";>
+            
+                @foreach (var resource in Model.RecentlyViewed)
+                {
+                <span><b>@Html.ActionLink(resource.Title, "Summary", "Resources", new { resourceId = resource.ResourceID }, null)</b> </span>
+                 <br />
+                }
+           
+
+                <br />
+            </td>
+        </tr>
+     </table>
+ }          

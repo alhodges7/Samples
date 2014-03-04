@@ -1,0 +1,29 @@
+﻿.KeyWordCloudClass {
+    margin-left: 60px; 
+    width:90%; 
+    max-width:900px; 
+    text-align:center;
+
+}
+
+.KeyWordCloudClass a {
+    color: #0000FF;
+    outline: none;
+    text-decoration: none;
+}
+
+#KeyWordCloudClass a:link {
+        color: #0000FF;
+    }
+
+#KeyWordCloudClass a:visited {
+        color: #0000FF;
+    }
+
+#KeyWordCloudClass a:active {
+        color: #0000FF;
+    }
+
+#KeyWordCloudClass a:hover {
+        background-color: #c7d1d6;
+    }

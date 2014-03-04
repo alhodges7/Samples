@@ -1,0 +1,96 @@
+﻿@model Astra.Models.ResourceTypes.Book
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<div class="adminEditorBox">
+
+    <div style="position: relative; left: -10px; top: 0px;">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 40%;"><div class="adminSectionTitle">Book</div>
+                </td>
+                <td style="width: 60%; text-align: right">
+                    <img id="Toggle_BookInfoSection" class="AdminSectionToggleButton" src="~/Images/bullet_toggle_plus.png" style="cursor: pointer;" title="expand / collapse" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id="BookInfoSection" style="display: none">
+
+        <!--Author ------->
+        <div class="">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Author)
+            </div>
+            <div class="">
+                @Html.TextBoxFor(model => model.Author, new { style = "width: 500px;" })
+                @Html.ValidationMessageFor(model => model.Author)
+            </div>
+        </div>
+
+
+        <table>
+            <tr>
+                <td>
+                    <!--Edition ------->
+                    <div class="">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Edition)
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.Edition, new { style = "width: 50px;" })
+                            @Html.ValidationMessageFor(model => model.Edition)
+                        </div>
+                    </div>
+                </td>
+                <td>
+                     <!--Pages ------->
+                    <div class="">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Pages)
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.Pages, new { style = "width: 50px;" })
+                            @Html.ValidationMessageFor(model => model.Pages)
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <!--ISBN ------->
+                    <div class="">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ISBN)
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.ISBN, new { style = "width: 200px;" })
+                            @Html.ValidationMessageFor(model => model.ISBN)
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        
+
+        <!--Publisher ------->
+        <div class="">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Publisher)
+            </div>
+            <div class="">
+                @Html.TextBoxFor(model => model.Publisher, new { style = "width: 500px;" })
+                @Html.ValidationMessageFor(model => model.Publisher)
+            </div>
+        </div>
+       
+        
+
+
+    </div>
+
+</div>

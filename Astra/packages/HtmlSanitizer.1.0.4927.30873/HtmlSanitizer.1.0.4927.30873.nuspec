@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>HtmlSanitizer</id>
+    <version>1.0.4927.30873</version>
+    <title>HtmlSanitizer</title>
+    <authors>Michael Ganss</authors>
+    <owners>Michael Ganss</owners>
+    <licenseUrl>https://github.com/mganss/HtmlSanitizer/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/mganss/HtmlSanitizer</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Cleans HTML from constructs that can be used for cross site scripting (XSS)</description>
+    <releaseNotes />
+    <copyright>Copyright 2013 Michael Ganss</copyright>
+    <language />
+    <tags>xss</tags>
+    <dependencies>
+      <dependency id="CsQuery" version="1.3.4" />
+    </dependencies>
+    <references>
+      <reference file="HtmlSanitizer.dll" />
+    </references>
+  </metadata>
+</package>

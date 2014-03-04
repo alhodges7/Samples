@@ -1,0 +1,101 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@using Astra.Repositories;
+@using Astra.Controllers;
+
+@model Astra.Models.ResourceSuggestion
+
+@Scripts.Render("~/Scripts/Suggestions/Suggestion.js")
+@Styles.Render("~/Content/Suggestions/SuggestionStyles.css")
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+    <table style="width: 800px; border:solid;  border-color: #EEEEEE; border-radius: 15px; margin-left: 20px; margin-top: 20px; padding: 10px; vertical-align: top;" >
+        <tr>
+            <td><strong>Title:</strong> @Model.Title</td>
+            <td style="width: 50%;">
+                <table style="width:100%">
+                    <tr>
+                        <td >
+                            <strong>Status:</strong> 
+                            @Model.GetStatusString()
+                        </td>
+                        <td>
+
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>ISBN:</strong>
+                @if (Model.ISBN.IsEmpty())
+                {
+                    @: unknown 
+                }
+                else
+                {
+                    @Model.GetFormattedISBN()
+                }
+            </td>
+            <td style="width: 50%;">
+                <strong>Price:</strong> @Model.StringPrice
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Description:</strong><br />
+                <div style="margin-left: 20px; margin-top: 10px">@Html.Raw(Model.Description)</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Reason for purchase:</strong>
+                <br />
+                <div style="margin-left: 20px; margin-top: 10px">@Html.Raw(Model.ReasonNeeded)</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Web URL:</strong>
+                    @if (Model.URL.IsEmpty())
+                    {
+                        @: none 
+                    }
+                    else
+                    {
+                        string webURL = Model.URL.ToString();
+                        if (webURL.Contains("http://") == false)
+                        {
+                            webURL = "http://" + webURL;
+                        }
+                        
+                        @Html.Raw("<a href=" + "\"" + webURL + "\">" + webURL + "</a>");
+                    }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center; font-family:'Times New Roman'; font-weight:bold; font-size: large; }">
+@*----------  Delete Suggestion Option ---------------------------------------------*@
+
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+                    <fieldset>
+                        @Html.HiddenFor(model => model.ResourceSuggestionId)
+                        @Html.HiddenFor(model => model.CreatedByMID)
+                        <input style="display:none;" id="EditType" name="EditType" value="@SuggestionsController.EDIT_TYPES.DELETE.ToString()" />
+
+                        Are you Sure you want to delete this suggestion? 
+                       <br />
+
+                        <input type="submit" value="Yes" />
+
+                        <input  type="button" title="No" value="No" class="backToSuggestionIndexButton" data-link="@Url.Action("Index", "Suggestions")" />
+
+                        
+                    </fieldset>
+                }
+            </td>
+        </tr>
+    </table>

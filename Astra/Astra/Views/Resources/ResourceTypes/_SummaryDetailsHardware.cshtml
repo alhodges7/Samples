@@ -1,0 +1,15 @@
+﻿@model Astra.Models.Resource
+
+@{var realModel = (Astra.Models.ResourceTypes.Hardware)Model;}
+        @if (realModel.Dimensions != null)
+        {
+            <b>Dimensions: </b>@realModel.Dimensions<br />
+        }
+        @if (realModel.Modelno != null)
+        {
+            <b>Modelno: </b>@realModel.Modelno<br />
+        }
+        @if (realModel.Copies != 0)
+        {
+            <b>Copies: </b>@realModel.Copies<br />
+        }

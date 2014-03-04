@@ -1,0 +1,18 @@
+﻿<script>
+    $(function () {
+        $("#accordion").accordion({
+            heightStyle: "content"
+        });
+    });
+</script>
+
+<div id="accordion" style="position: relative; top: 20px; margin-top : 0px; margin-left: 20px; margin-right: 20px; width: 550px;">
+    <h2 class="searchHeader">Key Word Search</h2>
+    <div>
+        @Html.Partial("~/Views/Search/_KeyWordSearchBox.cshtml")
+    </div>
+    <h2 class="searchHeader">Advanced Search</h2>
+    <div>
+        @Html.Action("SearchTypes", "Resources")  
+    </div>
+</div>

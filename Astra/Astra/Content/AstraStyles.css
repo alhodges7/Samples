@@ -1,0 +1,351 @@
+﻿
+div#spinner {
+    display: none;
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: url('/Images/spinner.gif') no-repeat center #fff;
+    text-align: center;
+    padding: 10px;
+    font: normal 16px Tahoma, Geneva, sans-serif;
+    border: 3px solid #666;
+    margin-left: -50px;
+    margin-top: -50px;
+    z-index: 2;
+    overflow: auto;
+}
+
+.ImageLink {
+    border-width: 0px;
+}
+
+    .ImageLink a:link {
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    .ImageLink a:visited {
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    .ImageLink a:hover {
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    .ImageLink a:active {
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+.ResourceThumbnailRight {
+    margin-left: 160px;
+}
+
+.ResourceThumbnailLeft {
+    float: left;
+    width: 155px;
+    margin-right: -160px;
+}
+
+.ResourceThumbnailRight-Wrap {
+    float: left;
+    width: 100%;
+}
+
+.clear {
+    clear:both;
+}
+
+.ResourceThumbnailTitle {
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #3C8195;
+}
+
+a.ResourceThumbnailTitle:link {
+    color: #3C8195;
+    text-decoration: none;
+}
+
+a.ResourceThumbnailTitle:visited {
+    color: #3C8195;
+    text-decoration: none;
+}
+
+a.ResourceThumbnailTitle:hover {
+    color: #3C8195;
+}
+
+a.ResourceThumbnailTitle:active {
+    color: #3C8195;
+}
+
+a.MessagesLink {
+    color: #fff;
+}
+
+
+.ResourceThumbnailEdition {
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    margin-right: 10px;
+    color: #7D7D7D;
+}
+
+.ResourceThumbnailAuthor {
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+.ResourceThumbnailDescription {
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.ResourceThumbnailKeyword {
+    color: #8E8E8E;
+    margin-left: 10px;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.ResourceThumbnailKeywordLabel {
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.searchHeader {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-size: 14px;
+}
+
+.resourceUnavailableMarker {
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    background-color: #e6c0c0;
+    color: #B90000;
+    border: 1px dotted;
+    border-radius: 5px;
+}
+
+.resourceAvailableMarker {
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    background-color: #f0fef0;
+    color: #006400;
+    border: 1px dotted;
+    border-radius: 5px;
+}
+
+.goodMessage {
+    color: #00ae09;
+}
+
+.badMessage {
+    color: #b70000;
+}
+
+.UserCommentName {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: medium;
+}
+
+.UserCommentEmail {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.UserCommentDate {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.UserCommentBody {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+.UserCommentsContainer {
+    background-color: #efefef;
+    margin-left: 5px;
+    margin-right: 15px;
+    border-color: #dddddd;
+    border-width: 1px;
+    border-style: solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+div.SummaryCheckoutContainer {
+    margin: auto auto auto auto;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    width: 160px;
+    border: 1px solid #38753a;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    background-color: whitesmoke;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+.CheckInOutDialog {
+    width: 400px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: small;
+    text-align: left;
+}
+/* Recent Resource History List */
+
+
+ol.historyList li:nth-child(odd) {
+    position: relative; /* Create a positioning context */
+    padding: 4px 8px; /* Add some spacing around the content */
+    list-style: none; /* Disable the normal item numbering */
+    background-color: #eee;
+}
+
+ol.historyList li:nth-child(even) {
+    position: relative; /* Create a positioning context */
+    padding: 4px 8px; /* Add some spacing around the content */
+    list-style: none; /* Disable the normal item numbering */
+    background-color: #fff;
+}
+
+table.standardTable td, th, tr {
+    padding-left: 3px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+table.standardTable tr:nth-child(odd) {
+    background-color: #d8d8d8;
+}
+
+table.standardTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.infoBox {
+    border: 2px solid #EFDFC1;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 20px 23px 15px 20px;
+    background-color: #fff;
+    border-color: #efdfc1;
+    border-radius: 15px;
+    clear:both;
+}
+
+.infoBox1 {
+    position:relative;
+    height:30px;
+    width:350px;
+    top:-10px;
+    margin: 5px -20px 5px 5px;  
+}
+
+.adminEditorBox {
+    border: 2px solid #eaeaea;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px 23px 15px 20px;
+    background-color: #efdfc1;
+    border-color: #efdfc1;
+    border-radius: 15px;
+    clear:both;
+    width: 505px;
+    
+}
+
+.adminSectionTitle {
+    font-size: 20px; 
+    font-weight: bold;
+    color: blue;
+}
+
+
+.summaryDiv {
+    padding: 10px 10px 10px 10px;
+    margin: auto;
+}
+
+.separatorDiv {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0px 7px 0px 7px;
+    margin: 10px 110px 10px 60px;
+    float: none;
+    height: 1px;
+}
+
+div.content {
+    width: 60%;
+    float: left;
+}
+
+div.sidebarRight {
+    width: auto;
+    float: right;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
+div.summaryOuter {
+    width: 95%;
+    height: auto;
+    margin: 0px 0px 10px 0px;
+    float:left;
+}
+
+div.summaryInnerLeft {
+    float: left;
+    width: 155px;
+    height: 210px;
+    padding: 10px 10px 10px 8px;
+    margin: auto;
+    margin-right: -200px;
+}
+
+div.summaryInnerRight {
+    float:left;
+    margin-left: 200px;
+}
+
+.column1{
+    background-color: cyan;
+    border: 2px solid blue;
+    float:left;
+    width: 45%;
+}
+.column2{
+    background-color: lime;
+    border: 2px solid red;
+    float: left;
+    width: 45%;
+}
+.clear{
+    clear: both;
+}
+div.createSuggestion {
+    width:800px;
+    margin:5px 5px 5px 5px;
+    border: 1px solid;
+    border-radius: 15px;
+    border-color: #efdfc1;
+    background-color:#EEEEEE;
+}

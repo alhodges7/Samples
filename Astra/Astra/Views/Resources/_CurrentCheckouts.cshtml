@@ -1,0 +1,30 @@
+﻿@using WebMatrix.WebData.Resources;
+@using Astra.Helper;
+@using Astra.Controllers;
+
+@model List<CheckOut>
+@{var checkouts = ViewBag.CurrentCheckouts as List<CheckOut>;}
+
+@if (checkouts.Count > 0)
+{   
+    <table class="standardTable" style="margin-left: 10px; margin-top: 10px;">
+            @{
+                UserProfile user = null;
+                using (var repository = new Astra.CompositeRepository.ScopedCompositeRepository().Repositories.UserProfileRepository)
+                {
+                    foreach (var checkout in checkouts)
+                    {
+                        user = repository.FindProfileByMID(checkout.UserMID);
+                        <tr style="background-color:#4cff00">
+                            <td colspan="3">Checked out to @UsersController.GetUserNameByMID(checkout.UserMID) on @OtherHelpers.StandardDateTimeFormat(checkout.DateCheckedOut.ToLocalTime())</td>
+                        </tr>
+                    }                    
+                }
+            }
+
+    </table>
+}
+else
+{
+    <div class="summaryDiv">There are no copies of this resource checked out.</div>
+}

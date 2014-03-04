@@ -1,0 +1,112 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@using Astra.CompositeRepository;
+@using MTUtil.Strings;
+@using Astra.Models.ResourceTypes;
+
+@model Astra.Models.Resource
+@{   
+    bool isAvailable = Model.AvailableCopies != 0;
+    string availabilityDivStyle;
+    if (!isAvailable)
+    {
+        availabilityDivStyle = "resourceUnavailableMarker";
+    }
+    else
+    {
+        availabilityDivStyle = "resourceAvailableMarker";
+    }
+
+    string copiesString = "copy";
+    if (Model.Copies > 1)
+    {
+        copiesString = "copies";
+    }
+    
+    bool userHasResourceCheckedOut = false;
+    bool userHasResourceReserved = false;
+
+    if (WebSecurity.IsAuthenticated)
+    {
+        using (var repository = new ScopedCompositeRepository().Repositories.CheckoutRepository)
+        {
+            userHasResourceCheckedOut = repository.IsCheckedOutByUser(MembershipHelper.CurrentUserName(), Model);
+        }
+        using (var repository = new ScopedCompositeRepository().Repositories.ReservationRepository)
+        {
+            userHasResourceReserved = repository.DoesUserHaveResourceReserved(MembershipHelper.CurrentUserName(), Model.ResourceID);
+        }
+    }
+
+    
+}
+<div class="ResourceThumbnailLeft">    
+    @Html.Partial("_SingleImage",
+                        new ResourceImageViewModel()
+                        {
+                            Image = Model.CoverImage,
+                            ResourceId = Model.ResourceID
+                        },
+                        new ViewDataDictionary { { "isReadOnly", true } })
+</div>
+<div class="ResourceThumbnailLeft-wrap">
+    <div class="ResourceThumbnailRight">
+        <span class="ResourceThumbnailTitle"><b>@Html.ActionLink(Model.Title, "Summary", "Resources", new { resourceId = Model.ResourceID }, new { @class = "ResourceThumbnailTitle" })</b> </span>
+        @Html.Partial("../Rating/_AverageRating")
+        <div class="@availabilityDivStyle" style="margin-right:3px;margin-bottom:0px; width:100px; float:right">
+            @Model.AvailableCopies of @Model.Copies available
+        </div>
+        @if (userHasResourceCheckedOut)
+        {
+            <div style="float: right; clear: right;">
+                <span style="color: #00850b"><strong>This resource is checked out to you</strong></span>
+            </div>
+        }
+        else if (userHasResourceReserved)
+        {
+            <div style="float: right; clear: right;">
+                <span style="color: #00850b"><strong>You have reserved this resource</strong></span>
+            </div>           
+        }
+        @if (Model is Book)
+        {
+            var book = (Book)Model;
+            if (book.Author != null)
+            {
+            <br />
+            <i>By @book.Author </i>    
+            }
+        }
+        @if (Model is EBook)
+        {
+            var book = (EBook)Model;
+            if (book.Author != null)
+            {
+            <br />
+            <i>By @book.Author </i>
+            }
+        }
+        <div class="ResourceThumbnailDescription">
+            @if (Model.Description != null)
+            {
+                @Model.Description
+            }
+            else
+            {
+                @: No description
+                            }
+        </div>
+        <div style="left: 10px;">
+            <span class="ResourceThumbnailKeywordLabel">Key Words:</span>
+            <span class="ResourceThumbnailKeyword">
+                @foreach (var item in Model.KeyWords)
+                {
+                    @Html.ActionLink(item, "QuickSearch", "Resources", new { keyWords = item }, null)
+                    @:&nbsp; &nbsp;
+                        }
+            </span>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+

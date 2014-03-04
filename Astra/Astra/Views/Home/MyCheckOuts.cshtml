@@ -1,0 +1,124 @@
+﻿@using Astra.ExtensionMethods;
+@model Astra.Models.ViewModels.MyCheckOutsViewModel
+@{
+    ViewBag.Title = "ActiveCheckOuts";
+}
+
+@Scripts.Render("~/Scripts/Home/MyCheckOuts.js")
+
+<h2>Active Check Outs</h2>
+<table  class="standardTable" style="margin-top:20px;margin-left:20px">
+    @{
+        
+        if (!Model.ActiveCheckOuts.Any())
+        {
+        <tr>
+              <td>You have no checkouts.</td>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <th>Name</th>
+            <th>Checked Out On</th>
+            <th>Action</th>
+        </tr>  
+        
+            foreach (var item in Model.ActiveCheckOuts)
+            {
+        <tr>
+
+            <td>@Html.ActionLink(item.Resource.Title, "Summary", "Resources", new { resourceId = item.ResourceID}, null) </td>
+
+            <td>@MTUtil.DateTimes.DateTimeUtils.UTCToLocal(item.DateCheckedOut).ToStandardFormat()</td>
+            <td>
+                @if (item.DateCheckedIn == MTUtil.DateTimes.DateTimeUtils.NullDate)
+                {
+                     <button class="btn_checkin" data-actionurl="@Url.Action("CheckIn", "CheckOuts", new { resourceId = item.ResourceID })">Check In</button>
+                }
+               
+            </td>
+        </tr>
+            }
+        }
+   
+    }
+</table>
+
+<h2>Active Reservations</h2>
+<table  class="standardTable" style="margin-top:20px;margin-left:20px">
+    @{
+        
+        if (!Model.ActiveReservations.Any())
+        {
+        <tr>
+              <td>You have no active reservations.</td>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <th>Name</th>
+            <th>Checked Out On</th>
+            <th>Action</th>
+        </tr>  
+        
+            foreach (var item in Model.ActiveReservations)
+            {
+        <tr>
+
+            <td>@Html.ActionLink(item.Resource.Title, "Summary", "Resources", new { resourceId = item.ResourceID}, null) </td>
+
+            <td>@item.DateReserved.ToStandardFormat()</td>
+            <td>
+                <button class="btn_cancelReservation" data-actionurl="@Url.Action("CancelReservation", "Reservations", new { resourceId = item.ResourceID })">Cancel</button>
+            </td>
+        </tr>
+            }
+        }
+   
+    }
+</table>
+
+
+<h2>Check Out History</h2>
+<table class="standardTable" style="margin-top:20px;margin-left:20px">
+    @{
+        
+        if (!Model.CheckOutHistory.Any())
+        {
+        <tr>
+            <td>You have no checkouts.</td>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <th>Name</th>
+            <th>Checked Out On</th>
+            <th>Checked In On</th>
+        </tr>  
+        
+            foreach (var item in Model.CheckOutHistory)
+            {
+        <tr>
+
+            <td>@Html.ActionLink(item.Resource.Title, "Summary", "Resources", new { resourceId = item.ResourceID}, null) </td>
+
+            <td>@MTUtil.DateTimes.DateTimeUtils.UTCToLocal(item.DateCheckedOut).ToStandardFormat()</td>
+            <td>@if (item.DateCheckedIn == MTUtil.DateTimes.DateTimeUtils.NullDate)
+                {
+                    @:(not checked in)
+                }
+                else
+                {
+                    @MTUtil.DateTimes.DateTimeUtils.UTCToLocal(item.DateCheckedIn).ToStandardFormat()
+                }
+            </td>
+           
+        </tr>
+            }
+        }
+   
+    }
+</table>

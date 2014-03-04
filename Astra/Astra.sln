@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astra", "Astra\Astra.csproj", "{2AEB468E-663F-4417-A061-7D7ABF05FB6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E1B9A335-991B-4048-807C-ED90BFFC81C9}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://e2ms00001:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Astra\\Astra.csproj
+		SccProjectName1 = Astra
+		SccLocalPath1 = Astra
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Debug|x64.Build.0 = Debug|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Release|x64.ActiveCfg = Release|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Release|x64.Build.0 = Release|Any CPU
+		{2AEB468E-663F-4417-A061-7D7ABF05FB6B}.Release|x64.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+EndGlobal

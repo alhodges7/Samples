@@ -1,0 +1,44 @@
+﻿@using Astra.Helper;
+@using Astra.Repositories;
+@using Astra.Controllers;
+
+@model Astra.Models.ViewModels.ResourceSuggestionPager
+
+<div id="grid" class="ajaxGrid">
+        @{
+            var grid = new WebGrid(null, canPage: true, rowsPerPage: Model.PageSize, defaultSort: "CreatedOn", ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.SuggestionList, rowCount: Model.TotalSuggestionsInCurrentSet, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        }
+
+        @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                footerStyle: "footer",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+        
+                columns: grid.Columns(
+                grid.Column("Title", format: @<text>@Html.ActionLink((string)item.Title, "GridEdit", "Suggestions", new { id = item.ResourceSuggestionId, suggestionStatus = ViewBag.StatusSeletionCode, displayType = SuggestionsController.DISPLAY_TYPES.GRID}, null)</text>, style: "title", canSort: true),
+        
+                grid.Column("Description", header: "Suggestion Description", format: @<text>@Html.Raw(item.Description)</text>, style: "description", canSort: true),
+        
+                grid.Column("Price", format: @<text>@item.StringPrice </text>, style: "price", canSort: true),
+        
+                grid.Column("ButtonColumn", string.Empty, format: @<text><a href="@Url.Action("GridEdit", "Suggestions", new { id = item.ResourceSuggestionId, suggestionStatus = ViewBag.StatusSeletionCode, displayType = SuggestionsController.DISPLAY_TYPES.GRID})" class="LinkButton"> 
+
+                    @if (MembershipHelper.CurrentUserIsAdminOrLibrarian())
+                    {
+                    
+                        @: Options >> 
+                    }
+                    else
+                    {
+                        @: Delete
+                    }
+  
+                    </a></text>, style: "buttonColumn", canSort: false)
+                )
+            )
+            <br />
+        </div>

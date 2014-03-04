@@ -1,0 +1,83 @@
+﻿@using Astra.Helper;
+@using Astra.Controllers;
+@using MTUtil.DateTimes;
+@model Astra.Models.Comment
+
+@{
+    UserProfile user = null;
+    using (var repository = new Astra.CompositeRepository.ScopedCompositeRepository().Repositories.UserProfileRepository)
+    {
+        user = repository.FindProfileByMID(MembershipHelper.StripOffDomain(Model.UserMID));
+    }
+}
+
+<div class="infoBox">
+    <span>
+         <b>
+            @if (user.Email != null)
+            {
+                <span><a href="mailto:@user.Email">@user.FirstName  @user.LastName</a></span>                           
+            }
+            else
+            {
+                <span>@user.FirstName @user.LastName</span>
+            }
+        </b>
+        <span class="UserCommentDate">added a review on @DateTimeUtils.UTCToLocal(Model.CreatedOn).ToString("MMMM dd, yyyy h:mm tt")</span> :
+
+    </span>
+    <span style="float:right">
+        @if (user.MID.ToLower() == MembershipHelper.CurrentUserName().ToLower())
+        {
+            @Html.Action("UserRating", "Rating", new { resourceId = Model.Resource.ResourceID })
+        }
+        else
+        {
+            @Html.Partial("~/views/rating/_singleUserRating.cshtml", Model)    
+        }
+    </span>
+
+
+    <div style="padding-bottom: 15px; clear: both;">
+        <span class="UserCommentBody">
+            @if (Model.UserComment != null)
+            {
+                @Html.Raw( Model.UserComment.Replace(Environment.NewLine, "<br/>"))    
+            }      
+            </span>
+    </div>
+    <div class="editBlock" id="editBlock-@Model.CommentId" style="display: none; padding-right: 10px; width:auto">
+        @using (Ajax.BeginForm("EditComment", "Comment",
+                                    new
+                                    {
+                                        resourceId = Model.Resource.ResourceID,
+                                        commentId = Model.CommentId,
+                                        UserComment = Model.UserComment
+                                    },
+                                    new AjaxOptions()
+                                    {
+                                        HttpMethod = "POST",
+                                        OnComplete = "SummaryScript.submitCommentEdit",
+                                        OnFailure = "AstraSharedScript.ajaxError"
+                                    }))
+        {
+            <div style="width: 100%; padding: 0px; margin: 0px">
+                @Html.Raw(Html.TextAreaFor(x=>x.UserComment, new{@class="ckeditor", style="word-wrap:break-word;"}))
+
+                <input type="submit" value="Save" style="margin-right: 5px; margin-left: auto" />
+                <input class="commentCancel" id="commentCancel-@Model.CommentId" type="button" value="Cancel" style="margin-right: 5px; margin-left: auto" />
+            </div>            
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(MembershipHelper.CurrentUserName())
+                        && (user.MID.ToLower() == MembershipHelper.CurrentUserName().ToLower()
+                            || Astra.Helper.MembershipHelper.UserHasRoles(MembershipHelper.CurrentUserName(), new string[] { MembershipHelper.ROLE_ADMIN })))
+    {
+        <div>
+            <input type="button" class="btn_editComment" id="btn_editComment-@Model.CommentId" data-actionurl="@Url.Action("EditComment", "Comment", new { commentId = Model.CommentId })" value="Edit" style="display:normal"/>
+            <input type="button" class="btn_removeComment" data-actionurl="@Url.Action("RemoveComment", "Comment", new { commentId = Model.CommentId })" value="Remove" />
+        </div>
+    }
+</div>
+@Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+@Scripts.Render("~/Scripts/ckeditor/adapters/jquery.js")

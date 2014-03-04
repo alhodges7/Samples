@@ -1,0 +1,46 @@
+﻿
+<table border="0">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <img src="@(HttpContext.Current.Request.ApplicationPath)Images/question_mark_01.png" title="This feature will search for matches in the title and keywords of all books." />
+                    </td>
+                    <td>
+                        <div style="font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 12px;margin-bottom:3px;">Search By KeyWords:</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            @Html.TextBox("KWB_KeyWordsToSearch", null, new { id = "KWB_KeyWordsToSearch"}) 
+        </td>
+        <td>
+            <input style="font-size:15px;margin-left:15px" type="button" name="imageSearchButton" value="Search" onclick="onSearchClicked()" />
+        </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+
+    function onSearchClicked() {
+        var t = $('#KWB_KeyWordsToSearch');
+
+        if (!t.val()) {
+            alert('Please enter at least one key word to search on.');
+            return;
+        }
+
+        var escaped = escape(t.val());
+
+        location = '@Url.Content("~/Resources/QuickSearch")/?keyWords=' + escaped;
+    }
+
+    $("#KWB_KeyWordsToSearch").keydown(function (event) {
+        if (event.which == 13) {
+            onSearchClicked();
+        }        
+    });
+</script>

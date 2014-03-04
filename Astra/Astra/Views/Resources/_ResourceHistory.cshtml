@@ -1,0 +1,20 @@
+﻿@using WebMatrix.WebData.Resources;
+@using Astra.Helper;
+@model List<ISummaryHistoryItem>
+@{var history = ViewBag.recentActivity as List<ISummaryHistoryItem>;}
+@* reduce the length of line, add created by prop to resource  *@
+@if (history.Count > 0)
+{
+    <table class="standardTable" style="margin-left: 10px; margin-top: 10px;">
+        @foreach (var activityItem in history)
+        {
+            <tr>
+                <td colspan="3">@OtherHelpers.StandardDateTimeFormat(activityItem.ActionTimestamp.ToLocalTime()) - @activityItem.ActionLabel</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="summaryDiv">This resource has not yet been checked out.</div>
+}

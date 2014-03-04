@@ -1,0 +1,94 @@
+﻿@using Astra.Helper;
+@using Astra.Repositories;
+@using Astra.Controllers;
+
+@model Astra.Models.ViewModels.ResourceSuggestionPager
+
+@{
+    ViewBag.Title = ViewBag.Description;
+}
+
+@Scripts.Render("~/Scripts/Suggestions/Suggestion.js")
+@Styles.Render("~/Content/Suggestions/SuggestionStyles.css")
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+@Scripts.Render("~/Scripts/ckeditor/adapters/jquery.js")
+
+<table style="width: 800px; border-radius: 15px; margin-left: 5px; margin-top: 0px; padding: 0px">
+    <tr>
+        <td>
+            <h2>@ViewBag.Description</h2>
+        </td>
+    </tr>
+</table>
+
+<table style="border-width:0px; width:100%;">
+    <tr>
+        <td>
+            <div style="width: 800px; border-radius: 15px; margin-left: 15px; margin-top: 0px; padding: 0px">
+            @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+            {
+                @Html.ActionLink("Pending Suggestions", "Index", new {suggestionStatus = (int)ResourceSuggestion.SuggestionStates.Pending }, new { onclick="showSpinner()" })
+                @: |
+                @Html.ActionLink("Approved Suggestions", "Index", new {suggestionStatus = (int)ResourceSuggestion.SuggestionStates.Approved }, new { onclick="showSpinner()" })
+                @: |
+                @Html.ActionLink("Rejected Suggestions", "Index", new {suggestionStatus = (int)ResourceSuggestion.SuggestionStates.Rejected }, new { onclick="showSpinner()" })
+                @: |
+                @Html.ActionLink("All Suggestions", "Index", new {suggestionStatus = SuggestionsController.ANY_SELECTION_VALUE }, new { onclick="showSpinner()" })
+                @: |
+            }
+
+            @Html.ActionLink("Add New Suggestion", "Create", new { suggestionStatus = ViewBag.StatusSeletionCode, displayType = ViewBag.CurrentDisplayType })
+            </div>
+        </td>
+        <td style="text-align:right;">
+
+            @* Only display format menu buttons for admin / librarians *@
+            @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+            {
+                <a href="@Url.Action("Index", "Suggestions", new { suggestionStatus = ViewBag.StatusSeletionCode, displayType = SuggestionsController.DISPLAY_TYPES.TABLES })" class="LinkButton"> Tables Display </a>
+
+                <a href="@Url.Action("Index", "Suggestions", new { suggestionStatus = ViewBag.StatusSeletionCode, displayType = SuggestionsController.DISPLAY_TYPES.GRID })" class="LinkButton"> Grid Display </a>
+            }
+            </td>
+        </tr>
+</table>
+
+
+<br />
+
+@if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+{
+    if (Model.SuggestionList.Count() > 0)
+    {
+        if (ViewBag.CurrentDisplayType == SuggestionsController.DISPLAY_TYPES.GRID)
+        {
+                @Html.Partial("_SuggestionsGrid", Model)
+        }
+        else
+        {
+            foreach (var item in Model.SuggestionList)
+            {
+                @Html.Partial("_SuggestionsTables", item)
+            }
+        }
+    }
+    else
+    {
+        @: <h3>Currently there are  no suggsetions with this status.</h3>
+    }
+}
+else
+{
+    if (Model.SuggestionList.Count() > 0)
+    {
+        
+        @Html.Partial("_SuggestionsGrid", Model)
+    }
+    else
+    {
+            @: <h3>You don't have any suggestions right now.</h3>
+    }
+
+}

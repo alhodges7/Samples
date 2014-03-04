@@ -1,0 +1,101 @@
+﻿@model Astra.Models.ResourceTypes.DVD
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+    <fieldset>
+        <legend>DVD</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Actors)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Actors)
+            @Html.ValidationMessageFor(model => model.Actors)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Directors)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Directors)
+            @Html.ValidationMessageFor(model => model.Directors)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Writers)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Writers)
+            @Html.ValidationMessageFor(model => model.Writers)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Producers)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Producers)
+            @Html.ValidationMessageFor(model => model.Producers)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Format)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Format)
+            @Html.ValidationMessageFor(model => model.Format)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Language)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Language)
+            @Html.ValidationMessageFor(model => model.Language)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Subtitles)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Subtitles)
+            @Html.ValidationMessageFor(model => model.Subtitles)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Studio)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Studio)
+            @Html.ValidationMessageFor(model => model.Studio)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Releasedate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Releasedate, new { id = "date" })
+            @Html.ValidationMessageFor(model => model.Releasedate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Runtime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Runtime)
+            @Html.ValidationMessageFor(model => model.Runtime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreatedOn)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreatedOn)
+            @Html.ValidationMessageFor(model => model.CreatedOn)
+        </div>
+
+     
+    </fieldset>

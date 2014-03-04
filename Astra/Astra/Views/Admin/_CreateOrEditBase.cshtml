@@ -1,0 +1,217 @@
+﻿@model Astra.Models.Resource
+
+
+
+@Html.HiddenFor(model => model.Discriminator)
+@Html.HiddenFor(model => model.ResourceID)
+@Html.HiddenFor(model => Model.ResourceTypeID)
+@Html.HiddenFor(model => model.CoverImageId)
+@Html.HiddenFor(model => model.Committed)
+
+<div>
+
+
+    <div class="adminEditorBox">
+
+        <div style="position: relative; left: -10px; top: 0px;">
+            <table style="width: 100%">
+                <tr>
+                    <td style="width: 40%;">
+                        <div class="adminSectionTitle">Basic</div>
+                    </td>
+                    <td style="width: 60%; text-align: right";>
+                        <img id="Toggle_GeneralInfoSection" class="AdminSectionToggleButton" src="~/Images/bullet_toggle_minus.png" style="cursor: pointer;" title="expand / collapse" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="GeneralInfoSection" style="display: block">
+
+            <!--Title ------->
+            <div class="" style="clear: both">
+                <div class="editor-label" style="padding-top: 5px;">
+                    @Html.LabelFor(model => model.Title)
+                </div>
+                <div class="">
+                    @Html.TextBoxFor(model => model.Title, new { style = "width: 500px;" })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+            </div>
+
+            <!--Description ------->
+            <div class="" style="clear: both">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Description)
+                </div>
+                <div class="">
+                    @Html.TextAreaFor(model => model.Description, new { style = "width: 500px; height: 105px;" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+
+            <!--Copies ------->
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Copies)
+                            </div>
+                            <div class="">
+                                @Html.TextBoxFor(model => model.Copies, new { style = "width: 40px;" })
+                                @Html.ValidationMessageFor(model => model.Copies)
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <!--Purchase Date ------->
+                        <div class="">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.PurchaseDate)
+                            </div>
+                            <div class="">
+                                @Html.TextBoxFor(model => model.PurchaseDate, new { style = "width: 175px;" })
+                                @Html.ValidationMessageFor(model => model.PurchaseDate)
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+
+            <!--Admin Note ------->
+            <div class="" style="clear: both">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.AdminNote)
+                </div>
+                <div class="">
+                    @Html.TextAreaFor(model => model.AdminNote, new { style = "width: 500px; height: 60px;" })
+                    @Html.ValidationMessageFor(model => model.AdminNote)
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div id="ResourceTypeSubEditor" class="" style="width: 50%; max-width: 450px">
+        <div>
+            @switch (Model.Discriminator)
+            {
+                case "Book":
+                @Html.Partial("_CreateOrEditBook", Model)
+                    break;
+                case "DVD":
+                @Html.Partial("_CreateOrEditDVD", Model)
+                    break;
+                case "EBook":
+                @Html.Partial("_CreateOrEditEBook", Model)
+                    break;
+                case "Hardware":
+                @Html.Partial("_CreateOrEditHardware", Model)
+                    break;
+                case "Software":
+                @Html.Partial("_CreateOrEditSoftware", Model)
+                    break;
+            }
+        </div>
+    </div>
+
+    <div class="adminEditorBox">
+
+        <div style="position: relative; left: -10px; top: 0px;">
+            <table style="width: 100%">
+                <tr>
+                    <td style="width: 40%;">
+                        <div class="adminSectionTitle">Cost</div>
+                    </td>
+                    <td style="width: 60%; text-align: right">
+                        <img id="Toggle_CostInfoSection" class="AdminSectionToggleButton" src="~/Images/bullet_toggle_plus.png" style="cursor: pointer;" title="expand / collapse" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="CostInfoSection" style="display: none">
+
+
+            <!--Purchase Cost ------->
+            <div class="">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.PurchaseCost)
+                </div>
+                <div class="">
+                    @Html.TextBoxFor(model => model.PurchaseCost, new { style = "width: 50px;" })
+                    @Html.ValidationMessageFor(model => model.PurchaseCost)
+                </div>
+            </div>
+
+
+
+            <!--Replacement Cost ------->
+            <div class="">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.ReplacementCost)
+                </div>
+                <div class="">
+                    @Html.TextBoxFor(model => model.ReplacementCost, new { style = "width: 50px;" })
+                    @Html.ValidationMessageFor(model => model.ReplacementCost)
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="adminEditorBox">
+
+        <div style="position: relative; left: -10px; top: 0px;">
+            <table style="width: 100%">
+                <tr>
+                    <td style="width: 40%;">
+                        <div class="adminSectionTitle">Key Words</div>
+                    </td>
+                    <td style="width: 60%; text-align: right">
+                        <img id="Toggle_KeyWordSection" class="AdminSectionToggleButton" src="~/Images/bullet_toggle_plus.png" style="cursor: pointer;" title="expand / collapse" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="KeyWordSection" style="display: none">
+
+
+            <!--Key Words ------->
+            <div class="" style="clear: both">
+                <div class="editor-label" style="padding-top: 15px;">
+                    <span style="font-style: italic;">(use ctrl-click to select multiple)</span>
+                </div>
+                @{ 
+                    Astra.Controllers.KeyWordController keyWordController = new Astra.Controllers.KeyWordController(); 
+                }
+                <div class="">
+                    @Html.ListBoxFor(model => model.KeyWords, keyWordController.KeyWordMultiSelectList((ViewBag.SelectedKeyWords as List<Astra.Models.KeyWord>)), new { style = "width: 268px;height:221px" })
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <!------ Images ------>
+    @Html.Partial("_CreateOrEditImages", Model)
+
+
+
+</div>

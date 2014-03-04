@@ -1,0 +1,48 @@
+﻿@model Astra.Models.Resource
+
+@{var realModel = (Astra.Models.ResourceTypes.DVD)Model;}
+
+        @if (realModel.Actors != null)
+        {
+            <b>Actors: </b>@realModel.Actors<br />
+        }
+        @if (realModel.Directors != null)
+        {
+            <b>Directors: </b>@realModel.Directors<br />
+        }
+        @if (realModel.Writers != null)
+        {
+            <b>Writers: </b>@realModel.Writers<br />
+        }
+        @if (realModel.Producers != null)
+        {
+            <b>Producers: </b>@realModel.Producers<br />
+        }
+        @if (realModel.Format != null)
+        {
+            <b>Format: </b>@realModel.Format<br />
+        }
+        @if (realModel.Language != null)
+        {
+            <b>Language: </b>@realModel.Language<br />
+        }
+        @if (realModel.Subtitles != null)
+        {
+            <b>Subtitles: </b>@realModel.Subtitles<br />
+        }
+        @if (realModel.Studio != null)
+        {
+            <b>Studio: </b>@realModel.Studio<br />
+        }
+        @if (realModel.Releasedate!= null)
+        {
+            <b>Release date: </b>@realModel.Releasedate<br />
+        }
+        @if (realModel.Runtime != null)
+        {
+            <b>Runtime: </b>@realModel.Runtime<br />
+        }
+        @if (realModel.Copies != 0)
+        {
+            <b>Copies: </b>@realModel.Copies<br />
+        }

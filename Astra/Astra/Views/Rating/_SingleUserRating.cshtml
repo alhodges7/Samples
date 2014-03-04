@@ -1,0 +1,12 @@
+﻿@using Astra.Repositories;
+@using Astra.Helper;
+@model Astra.Models.Comment
+
+@{
+    double userRating = 0.0;
+    using (var repository = new Astra.CompositeRepository.ScopedCompositeRepository().Repositories.RatingsRepository)
+    {
+        userRating = repository.GetUserRating(Model.ResourceID, MembershipHelper.StripOffDomain(Model.UserMID));
+    }
+}
+<div class="rateit" data-rateit-value="@userRating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>

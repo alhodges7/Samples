@@ -1,0 +1,74 @@
+﻿@using Astra.Helper;
+@using Astra.CompositeRepository;
+
+@if (Request.IsAuthenticated) {
+
+    Astra.Controllers.AccountController acctController = new Astra.Controllers.AccountController();
+    Astra.Models.UserProfile currentUserProfile = acctController.GetCurrentUserProfile;
+    string userFriendlyName = (currentUserProfile != null) ? currentUserProfile.FirstName : MembershipHelper.StripOffDomain(User.Identity.Name);
+    IEnumerable<UserMailMessage> unreadMessages = new List<UserMailMessage>();
+    
+    using (var repositories = new ScopedCompositeRepository())
+    {
+        unreadMessages = repositories.Repositories.UserMessageRepository.GetUnreadMessagesForUser(Astra.Helper.MembershipHelper.CurrentUserName());
+    }
+
+    if (MembershipHelper.FormsAuthMode)
+    {
+    
+        <table style="text-align:right;margin-left:auto;margin-right:0px">
+            <tr>
+                <td>
+                    Hello, @Html.ActionLink(userFriendlyName, "ManageProfile", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "ManagePassword" })!<br />
+                    @if (unreadMessages.Any())
+                    {
+                        @: <strong>  
+                    }
+                    You have @Html.ActionLink(String.Format("{0} unread message{1}", MTUtil.Strings.StringUtils.GetFriendlyInteger(unreadMessages.Count(), "no"), (unreadMessages.Count() == 1 ? string.Empty : "s")),
+                        "Index", "UserMessages", null, new { @class = "MessagesLink" }).
+                    @if (unreadMessages.Any())
+                    {
+                        @: </strong>  
+                    }
+                    
+                </td>
+                <td valign="middle">
+                    <section class="LogonOff">
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+                @Html.AntiForgeryToken()
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            }
+                    </section>
+                </td>
+            </tr>
+        </table>
+    } else {
+     <table style="text-align:right;margin-left:auto;margin-right:0px">
+            <tr>
+                <td>
+                    Hello, @userFriendlyName!<br />
+                    @if (unreadMessages.Any())
+                    {
+                        @: <strong>  
+                    }
+                    You have @Html.ActionLink(String.Format("{0} unread message{1}", MTUtil.Strings.StringUtils.GetFriendlyInteger(unreadMessages.Count(), "no"), (unreadMessages.Count() == 1 ? string.Empty : "s")),
+                        "Index", "UserMessages", null, new { @class = "MessagesLink" }).
+                    @if (unreadMessages.Any())
+                    {
+                        @: </strong>  
+                    }
+                    
+                </td>
+            </tr>
+        </table>
+    }
+} else {
+    if (MembershipHelper.FormsAuthMode){
+        <section class="LogonOff">
+            <ul style="margin-top:28px">
+                <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: new { returnUrl = Request.Url.AbsolutePath}, htmlAttributes: new { id = "loginLink" })</li>
+            </ul>
+        </section>
+    }
+}

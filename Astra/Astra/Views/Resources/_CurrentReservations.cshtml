@@ -1,0 +1,38 @@
+﻿@using WebMatrix.WebData.Resources;
+@using Astra.Helper;
+@model List<Reservation>
+@{
+    var reservations = ViewBag.CurrentReservations as List<Reservation>;    
+  }
+
+@if (reservations.Count > 0)
+{    
+    <table class="standardTable" style="margin-left: 10px; margin-top: 10px;">
+            @{
+                UserProfile user = null;
+                using (var repository = new Astra.CompositeRepository.ScopedCompositeRepository().Repositories.UserProfileRepository)
+                {
+                    foreach (var reservation in reservations)
+                    {
+                        user = repository.FindProfileByMID(reservation.UserMID);
+                        if (ViewBag.UserHasResourceReserved)
+                        {
+                            <tr style="background-color:#4cff00">
+                                <td colspan="3">You reserved this resource out on @OtherHelpers.StandardDateTimeFormat(reservation.DateReserved.ToLocalTime())</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">@user.FirstName @user.LastName reserved this resource on @OtherHelpers.StandardDateTimeFormat(reservation.DateReserved.ToLocalTime())</td>
+                            </tr>                            
+                        }                        
+                    }                    
+                }
+            }
+    </table>
+}
+else
+{
+    <div class="summaryDiv">Nobody has reserved this resource.</div>
+}

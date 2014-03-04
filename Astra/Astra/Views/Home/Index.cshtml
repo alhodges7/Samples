@@ -1,0 +1,60 @@
+﻿@using Astra.Models;
+@using Astra.Models.ViewModels;
+@using MTUtil.Strings;
+@using Astra.Helper;
+@model Astra.Models.ViewModels.IndexPagerViewModel
+@{
+    ViewBag.Title = "Welcome to Astra!";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>Welcome to Astra,</h1>
+                <h2>the Developer Resource Lending Library for Mindtree USDC.</h2>
+            </hgroup>
+            <p>
+                Use Astra to get ahold of the resources you need to improve your skills and be more effective at work!
+            </p>
+        </div>
+
+    </section>
+}
+<table>
+    <tr>
+        <td style="vertical-align:top;">
+            @Html.Partial("~/Views/Search/_ResourceSearcher.cshtml") <br />
+            @if (Model != null && Model.RecentlyViewed != null && Model.RecentlyViewed.Count() > 0)
+            {
+                @Html.Partial("_RecentlyViewedView", Model)
+            }
+
+        </td>
+        <td style="text-align:center; vertical-align:top">
+             @{Html.RenderAction("KeyWordCloud", "KeyWord");}
+        </td>
+    </tr>
+</table>
+
+
+@if (Model != null && Model.Recommendations != null && Model.Recommendations.Count() > 0)
+ {
+     <h2 style="padding-left:20px;margin-top:-10px">@ViewBag.RecommendedList</h2>
+     foreach (var resource in Model.Recommendations)
+        {
+            <div class="infoBox">
+                @Html.Partial("_ResourceThumbnail", resource)
+            </div>
+        }
+ }
+
+ @if (Model != null && Model.RecentlyAddedItems != null && Model.RecentlyAddedItems.Count() > 0)
+ {
+     <h2 style="padding-left:20px">@ViewBag.NewItemsList</h2>
+     foreach (var resource in Model.RecentlyAddedItems)
+        {
+            <div class="infoBox">
+                @Html.Partial("_ResourceThumbnail", resource)
+            </div>
+        }
+ }

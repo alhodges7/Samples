@@ -1,0 +1,29 @@
+﻿@model Astra.Models.ViewModels.ResourceImageViewModel
+
+@if (Model.Image != null)
+{
+    <table>
+        <tr style="height: 150px">
+
+            <td style="width: 150px;text-align:center;border:solid;border-width:2px;border-color:#808080">
+
+                <a class="fancybox ImageLink" rel="additionalImages" href="/@(Model.Image.ID)_full.mti" title="@Model.Image.Caption">
+	                <img src="/@(Model.Image.ID)_thumb.mti" alt="@Model.Image.Caption" />
+                </a>
+
+                @if (ViewData.ContainsKey("isReadOnly") && (bool)ViewData["isReadOnly"] != true)
+                {
+                    <input type="button" value="Delete" id="coverImgDelete_@Model.Image.ID" class="btn_coverImgDelete" />                        
+                }
+            </td>       
+        </tr>
+    </table>
+}
+else
+{
+    <div style="width:150px;height:150px;background-color:#A8C6EA; border-style:solid; border-color:#808080; border-width:2px">
+		<div style="margin-right: auto;  margin-left: auto; text-align:center; vertical-align:middle; font-family: Arial, Helvetica, sans-serif; margin-top: 60px; color: #666666;">
+			<strong>NO IMAGE</strong>
+		</div>
+	</div>
+}

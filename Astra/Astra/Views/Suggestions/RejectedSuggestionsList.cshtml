@@ -1,0 +1,37 @@
+﻿@using Astra.Helper;
+@using Astra.Repositories;
+
+@model IEnumerable<Astra.Models.ResourceSuggestion>
+
+@{
+    ViewBag.Title = "Rejected Suggestion List";
+}
+
+<table style="width: 400px; border-radius: 15px; margin-left: 20px; margin-top: 0px; padding: 0px">
+    <tr>
+        <td>
+            <h2>Rejected Suggestion List</h2>
+        </td>
+    </tr>
+</table>
+<div style="width: 800px; border-radius: 15px; margin-left: 20px; margin-top: 0px; padding: 0px">
+            @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+            {
+                @: Rejected Suggestions
+                @: |
+                @Html.ActionLink("See Approved Suggestions", "ApprovedSuggestionsList")
+                @: |
+            }
+
+            @Html.ActionLink("See Full Suggestion List", "Index") | 
+            @Html.ActionLink("Add New Suggestion", "Create") 
+</div>
+
+@foreach (var item in Model)
+{
+    @Html.Partial("_Suggestion", item)
+}
+<br />
+<div style="width: 400px; border-radius: 15px; margin-left: 20px; margin-top: 0px; padding: 0px">
+    @Html.ActionLink("Back to full suggestion list", "Index")
+</div>

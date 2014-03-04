@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Astra UserCheckOuts Report", "Astra UserCheckOuts Report.rptproj", "{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.Debug|Default.ActiveCfg = Debug
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.Debug|Default.Build.0 = DebugLocal
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.Debug|Default.Deploy.0 = DebugLocal
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.DebugLocal|Default.Build.0 = DebugLocal
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.Release|Default.ActiveCfg = Release
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.Release|Default.Build.0 = Release
+		{8BE5DE00-2D7C-441B-BCCD-121FB8D43925}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

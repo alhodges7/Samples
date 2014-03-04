@@ -1,0 +1,11 @@
+﻿@model Astra.Models.Resource
+
+@{var realModel = (Astra.Models.ResourceTypes.EBook)Model;}
+        @if (realModel.Copies != 0)
+        {
+            <b>Copies: </b>@realModel.Copies<br />
+        }
+        @if (!string.IsNullOrWhiteSpace(realModel.Url))
+        {
+            <b>URL: </b><a href="@realModel.Url">@realModel.Url</a><br />
+        }

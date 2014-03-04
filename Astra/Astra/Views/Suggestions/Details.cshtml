@@ -1,0 +1,92 @@
+﻿@using Astra.Models.ViewModels;
+@using Astra.Helper;
+@using Astra.Repositories;
+
+@model Astra.Models.ResourceSuggestion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>ResourceSuggestion</legend>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.ReasonNeeded)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ReasonNeeded)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.URL)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.URL)
+    </div>
+
+    @if (Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_ADMIN) || Roles.IsUserInRole(MembershipHelper.CurrentUserName(), MembershipHelper.ROLE_LIBRARIAN))
+    {
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LibrariansNote)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.LibrariansNote)
+        </div>
+    }
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ISBN)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(model => model.ISBN)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Status)
+    </div>
+
+    <div>
+        @switch (Model.Status)
+        {
+            case (int)ResourceSuggestion.SuggestionStates.Pending:
+            @: Pending
+                        break;
+
+            case (int)ResourceSuggestion.SuggestionStates.Approved:
+            @: Approved
+                        break;
+
+            default:
+                        throw new Exception("Unknown Status integer value");
+                        
+        }
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ResourceSuggestionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

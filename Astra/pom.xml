@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ITS</groupId>
+  <artifactId>ITS-123456</artifactId>
+  <version>1.0</version>
+  <packaging>sln</packaging>
+  <name>Astra</name>
+  <description>Web application</description>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <!-- NOTE : the versions and parameters may be defined as properties. Prefer 
+            this option to the plugin configuration as it may be accessible to several 
+            plugins -->
+    <!-- Name of the solution file, located in the same directory as the pom.xml -->
+    <visual.studio.solution>Astra.sln</visual.studio.solution>
+    <!-- Name pattern to irecognize the test assemblies, so that unit tests 
+            are only launched on those, and so that those are excluded from code coverage -->
+    <visual.test.project.pattern>*.Tests</visual.test.project.pattern>
+    <!-- Version of the .Net tools, which may be 2.0 or 3.5 only -->
+    <dotnet.tool.version>4.0</dotnet.tool.version>
+    <sonar.language>cs</sonar.language>
+    <msbuild.configurations>Debug</msbuild.configurations>
+    <maven.site.generateReports>false</maven.site.generateReports>
+    <sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
+    <sonar.cpd.skip>true</sonar.cpd.skip>
+   <sonar.importSources>true</sonar.importSources>
+    <!-- mandatory-->
+    
+    
+    
+    
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar-plugins.dotnet</groupId>
+       <artifactId>maven-dotnet-plugin</artifactId>
+        <version>0.6</version>
+        <configuration>
+          <solutionName>Astra.sln</solutionName>
+          <language>cs</language>
+          <toolVersion>4.0</toolVersion>
+          <Platform>x64</Platform>
+          <buildConfigurations>Release,Debug</buildConfigurations>
+          <rebuild>true</rebuild>
+        </configuration>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+	<artifactId>sonar-maven-plugin</artifactId>
+	
+        <configuration>
+          <toolVersion>4.0</toolVersion>
+          <buildConfigurations>Release,Debug</buildConfigurations>
+          <rebuild>true</rebuild>
+        </configuration>
+</plugin>
+
+    </plugins>
+  </build>
+</project>
